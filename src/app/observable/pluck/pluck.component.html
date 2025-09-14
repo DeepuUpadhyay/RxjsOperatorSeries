@@ -1,54 +1,193 @@
-<div class="my-3">
-  <h2>Pluck Operator</h2>
-  <br />
-  <div class="row">
-    <div class="col md-4">
-      <strong>Ex-1</strong>
-      <p class="bg-light py-3 px-3 border rounded">
-        <strong>Data:pluck by property</strong>
-      </p>
-      <hr />
-      <table>
-        <tr>
-          <th>First Name</th>
-          <th>Skills</th>
-        </tr>
-        <tr *ngFor="let user of mesg1" class="text-success">
-          <td>{{ user }}</td>
-          <td>{{ user?.skills }}</td>
-        </tr>
-      </table>
-      <!-- <p><strong  class="text-success">{{mesg1}}</strong> </p> -->
+<div class="container-fluid p-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">
+      <i class="fas fa-filter me-2"></i>Pluck Operator
+    </h1>
+    <button class="btn btn-outline-primary" (click)="goBackToDashboard()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Operator Definition Section -->
+  <div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0"><i class="fas fa-book me-2"></i>What is Pluck?</h3>
     </div>
-    <div class="col md-4">
-      <strong>Ex-2</strong>
-      <p class="bg-light py-3 px-3 border rounded">
-        <strong>Data:pluck by nested property</strong>
-      </p>
-      <table>
-      <tr>
-        <th>Resedence</th>
-      </tr>
-      <tr *ngFor="let user of mesg2" class="text-success">
-        <td>{{ user }}</td>
-      </tr>
-    </table>
-      <hr />
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong>Definition:</strong></h5>
+        <p class="mb-2">{{operatorDefinition}}</p>
+        <div class="bg-light p-3 rounded mt-3">
+          <strong>Key Features:</strong>
+          <ul class="mb-0 mt-2">
+            <li> <strong>Property Selection:</strong> Extracts specific properties from objects</li>
+            <li> <strong>Nested Access:</strong> Supports deep property path extraction</li>
+            <li> <strong>Deprecated:</strong> Use map() with property access in RxJS 7+</li>
+            <li> <strong>Shorthand:</strong> Cleaner syntax than map for simple property extraction</li>
+          </ul>
+        </div>
+        <div class="alert alert-warning mt-3">
+          <strong> Migration Note:</strong> Pluck is deprecated in RxJS 7+. Use <code>map(obj => obj.property)</code> instead.
+        </div>
+      </div>
     </div>
-    <div class="col md-4">
-      <strong>Ex-3</strong>
-      <p class="bg-light py-3 px-3 border rounded">
-        <strong>Data: </strong>
-      </p>
-      <hr />
-      <table>
-        <tr>
-          <th>Skills</th>
-        </tr>
-        <tr *ngFor="let user of mesg3" class="text-success">
-          <td>{{ user }}</td>
-        </tr>
-      </table>
+  </div>
+
+  <!-- Real-Life Examples Section -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Real-Life Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4 mb-3" *ngFor="let example of realLifeExamples">
+          <div class="border rounded p-3 h-100">
+            <h5 class="text-success">{{example.title}}</h5>
+            <p class="text-muted">{{example.description}}</p>
+            <pre class="bg-dark text-light p-2 rounded"><code>{{example.code}}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Demonstrations -->
+  <div class="card mb-4 border-warning">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-play me-2"></i>Interactive Demonstrations</h3>
+    </div>
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3"> Property Extraction Demos</h5>
+          <div class="d-flex gap-2 mb-3 flex-wrap">
+            <button class="btn btn-primary" (click)="extractCustomProperty('departments')">
+              <i class="fas fa-building me-2"></i>Extract Departments
+            </button>
+            <button class="btn btn-info" (click)="extractCustomProperty('positions')">
+              <i class="fas fa-user-tie me-2"></i>Extract Positions
+            </button>
+            <button class="btn btn-success" (click)="extractCustomProperty('cities')">
+              <i class="fas fa-city me-2"></i>Extract Cities
+            </button>
+            <button class="btn btn-secondary" (click)="demonstrateArrayProperty()">
+              <i class="fas fa-list me-2"></i>Array Property
+            </button>
+          </div>
+          <p class="text-muted">Open browser console to see extraction results</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Basic Pluck Examples -->
+  <div class="card mb-4 border-info">
+    <div class="card-header bg-info text-white">
+      <h3 class="mb-0"><i class="fas fa-code me-2"></i>Basic Pluck Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Names Extraction -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header bg-light">
+              <h6 class="mb-0"><strong>Extract Names</strong></h6>
+            </div>
+            <div class="card-body">
+              <p class="small text-muted">pluck(''name'')</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item py-1" *ngFor="let name of extractedNames">
+                  <i class="fas fa-user me-2 text-primary"></i>{{name}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- States Extraction -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header bg-light">
+              <h6 class="mb-0"><strong>Extract States</strong></h6>
+            </div>
+            <div class="card-body">
+              <p class="small text-muted">pluck(''residence'', ''state'')</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item py-1" *ngFor="let state of extractedStates">
+                  <i class="fas fa-map-marker-alt me-2 text-success"></i>{{state}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Extraction -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header bg-light">
+              <h6 class="mb-0"><strong>Extract Skills</strong></h6>
+            </div>
+            <div class="card-body">
+              <p class="small text-muted">pluck(''skills'')</p>
+              <div *ngFor="let skillSet of extractedSkills; let i = index" class="mb-2">
+                <small class="text-muted">Employee {{i + 1}}:</small>
+                <div>
+                  <span class="badge bg-secondary me-1" *ngFor="let skill of skillSet">{{skill}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Migration Guide -->
+  <div class="card mb-4 border-warning">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-exclamation-circle me-2"></i>Migration Guide</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong> Pluck to Map Migration:</strong></h5>
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="text-danger"> Old (Deprecated)</h6>
+            <pre class="bg-dark text-light p-2 rounded"><code>// Simple property
+source.pipe(pluck(''name''))
+
+// Nested property  
+source.pipe(pluck(''user'', ''profile'', ''email''))</code></pre>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-success"> New (Recommended)</h6>
+            <pre class="bg-dark text-light p-2 rounded"><code>// Simple property
+source.pipe(map(obj => obj.name))
+
+// Nested property
+source.pipe(map(obj => obj.user?.profile?.email))</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Tips -->
+  <div class="card border-danger">
+    <div class="card-header bg-danger text-white">
+      <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Important Notes</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-warning">
+        <h5><strong> Best Practices:</strong></h5>
+        <ul class="mb-0">
+          <li><strong>Migration:</strong> Replace pluck with map for better type safety and future compatibility</li>
+          <li><strong>Null Safety:</strong> Use optional chaining (?.) with map to handle undefined properties</li>
+          <li><strong>Performance:</strong> Map provides better performance than pluck in modern RxJS</li>
+          <li><strong>Type Safety:</strong> Map with TypeScript provides better type inference than pluck</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

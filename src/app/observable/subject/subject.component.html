@@ -1,16 +1,155 @@
-<div class="my-3 col-md-4 bg-light py-3 px-3 border rounded">
-  Subject and BehaviourSubject
-</div>
-<hr />
-<h3>Username is <strong class="text-primary">{{userNameLatest}}</strong></h3>
-<div class="row">
-  <div class="col-md-4">
-    <app-comp1></app-comp1>
+<div class="container-fluid p-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">
+      <i class="fas fa-broadcast-tower me-2"></i>Subject Operator
+    </h1>
+    <button class="btn btn-outline-primary" (click)="goBackToDashboard()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </button>
   </div>
-  <div class="col-md-4">
-    <app-comp2></app-comp2>
+
+  <!-- Operator Definition Section -->
+  <div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0"><i class="fas fa-book me-2"></i>What is Subject?</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong>Definition:</strong></h5>
+        <p class="mb-2">{{operatorDefinition}}</p>
+        <div class="bg-light p-3 rounded mt-3">
+          <strong>Key Features:</strong>
+          <ul class="mb-0 mt-2">
+            <li>📡 <strong>Multicasting:</strong> One source, multiple observers</li>
+            <li>🔄 <strong>Bidirectional:</strong> Can emit and observe values</li>
+            <li>🚀 <strong>Hot Observable:</strong> Emits regardless of subscribers</li>
+            <li>💡 <strong>State Sharing:</strong> Perfect for component communication</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="col-md-4">
-    <app-comp3></app-comp3>
+
+  <!-- Real-Life Examples Section -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Real-Life Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4 mb-3" *ngFor="let example of realLifeExamples">
+          <div class="border rounded p-3 h-100">
+            <h5 class="text-success">{{example.title}}</h5>
+            <p class="text-muted">{{example.description}}</p>
+            <pre class="bg-dark text-light p-2 rounded"><code>{{example.code}}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Demos Section -->
+  <div class="card mb-4 border-warning">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-play me-2"></i>Interactive Demonstrations</h3>
+    </div>
+    <div class="card-body">
+      
+      <!-- Notification System Demo -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">🔔 Notification System Demo</h5>
+          <p class="mb-3">Click the button to send notifications to multiple listeners simultaneously:</p>
+          <div class="d-flex gap-2 mb-3">
+            <button class="btn btn-primary" (click)="sendNotification()">
+              <i class="fas fa-bell me-2"></i>Send Random Notification
+            </button>
+            <button class="btn btn-info" (click)="demonstrateMulticasting()">
+              <i class="fas fa-broadcast-tower me-2"></i>Demonstrate Multicasting
+            </button>
+          </div>
+          <div id="notificationContainer" class="border rounded p-3 bg-light" style="min-height: 150px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+      <!-- Event Bus Demo -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">🚌 Event Bus Communication</h5>
+          <p class="mb-3">Watch how different components react to the same events:</p>
+          <div id="eventBusContainer" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+      <!-- Chat System Demo -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">💬 Chat System</h5>
+          <p class="mb-3">See how chat messages are distributed to multiple windows:</p>
+          <div id="chatContainer" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+      <!-- Multicasting Demo -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">📡 Multicasting Demonstration</h5>
+          <p class="mb-3">Watch how multiple observers receive the same stream:</p>
+          <div id="multicastContainer" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Basic Subject Example -->
+  <div class="card mb-4 border-info">
+    <div class="card-header bg-info text-white">
+      <h3 class="mb-0"><i class="fas fa-code me-2"></i>Basic Subject Example</h3>
+    </div>
+    <div class="card-body">
+      <div id="subjectContainer" class="border rounded p-3 bg-light" style="min-height: 150px; font-family: monospace; white-space: pre-line;"></div>
+    </div>
+  </div>
+
+  <!-- Current Subject Implementation -->
+  <div class="card mb-4 border-secondary">
+    <div class="card-header bg-secondary text-white">
+      <h3 class="mb-0"><i class="fas fa-users me-2"></i>Subject Communication Example</h3>
+    </div>
+    <div class="card-body">
+      <h4 class="mb-3">Username is <strong class="text-primary">{{userNameLatest}}</strong></h4>
+      <p class="text-muted mb-3">The components below share the same Subject for username updates:</p>
+      <div class="row">
+        <div class="col-md-4">
+          <app-comp1></app-comp1>
+        </div>
+        <div class="col-md-4">
+          <app-comp2></app-comp2>
+        </div>
+        <div class="col-md-4">
+          <app-comp3></app-comp3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Tips -->
+  <div class="card border-danger">
+    <div class="card-header bg-danger text-white">
+      <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Important Notes</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-warning">
+        <h5><strong>⚠️ Best Practices:</strong></h5>
+        <ul class="mb-0">
+          <li><strong>Memory Leaks:</strong> Always unsubscribe from Subjects to prevent memory leaks</li>
+          <li><strong>Error Handling:</strong> Subjects stop emitting after error - use operators like catchError</li>
+          <li><strong>Late Subscribers:</strong> Subjects don't replay past values - consider ReplaySubject</li>
+          <li><strong>Completion:</strong> Always call complete() when Subject is no longer needed</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>

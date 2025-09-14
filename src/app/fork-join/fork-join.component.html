@@ -1,128 +1,233 @@
-<div class="fork-join-container">
-  <div class="header">
-    <h2>Modern Angular ForkJoin Example</h2>
-    <p>This example demonstrates forkJoin using Angular's latest features: standalone components, signals, and inject function.</p>
-    
-    <div class="button-group">
-      <button (click)="reloadData()" [disabled]="loading()" class="btn btn-primary">
-        Object Syntax (Signals)
-      </button>
-      <button (click)="reloadWithArraySyntax()" [disabled]="loading()" class="btn btn-secondary">
-        Array Syntax (Signals)
-      </button>
-      <button (click)="reloadWithAsyncAwait()" [disabled]="loading()" class="btn btn-success">
-        Async/Await Pattern
-      </button>
-      <button (click)="clearData()" [disabled]="loading()" class="btn btn-warning">
-        Clear Data
-      </button>
+<div class="container-fluid p-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">
+      <i class="fas fa-code-branch me-2"></i>ForkJoin Operator
+    </h1>
+    <button class="btn btn-outline-primary" (click)="goBackToDashboard()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Operator Definition Section -->
+  <div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0"><i class="fas fa-book me-2"></i>What is ForkJoin?</h3>
     </div>
-  </div>
-
-  <!-- Loading State -->
-  <div *ngIf="loading()" class="loading">
-    <div class="spinner"></div>
-    <p>Loading data from multiple APIs in parallel...</p>
-  </div>
-
-  <!-- Error State -->
-  <div *ngIf="isError()" class="error">
-    <h3>❌ Error</h3>
-    <p>{{ error() }}</p>
-    <button (click)="reloadData()" class="btn btn-primary">Try Again</button>
-  </div>
-
-  <!-- Statistics Section -->
-  <div *ngIf="hasData() && !loading()" class="stats-section">
-    <div class="stat-card">
-      <h3>📊 Data Statistics</h3>
-      <div class="stats-grid">
-        <div class="stat-item">
-          <span class="stat-number">{{ users().length }}</span>
-          <span class="stat-label">Users</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">{{ posts().length }}</span>
-          <span class="stat-label">Posts</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">{{ comments().length }}</span>
-          <span class="stat-label">Comments</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">{{ totalItems() }}</span>
-          <span class="stat-label">Total Items</span>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong>Definition:</strong></h5>
+        <p class="mb-2">{{operatorDefinition}}</p>
+        <div class="bg-light p-3 rounded mt-3">
+          <strong>Key Features:</strong>
+          <ul class="mb-0 mt-2">
+            <li>🚀 <strong>Parallel Execution:</strong> Runs all observables simultaneously</li>
+            <li>⏳ <strong>Wait for All:</strong> Emits only when ALL observables complete</li>
+            <li>📦 <strong>Combined Results:</strong> Returns object or array of all final values</li>
+            <li>💥 <strong>Fail Fast:</strong> If one fails, entire operation fails</li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Success State -->
-  <div *ngIf="!loading() && !isError()" class="results">
+  <!-- Real-Life Examples Section -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Real-Life Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4 mb-3" *ngFor="let example of realLifeExamples">
+          <div class="border rounded p-3 h-100">
+            <h5 class="text-success">{{example.title}}</h5>
+            <p class="text-muted">{{example.description}}</p>
+            <pre class="bg-dark text-light p-2 rounded"><code>{{example.code}}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Demonstrations -->
+  <div class="card mb-4 border-warning">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-play me-2"></i>Interactive Demonstrations</h3>
+    </div>
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">🎮 ForkJoin Demonstrations</h5>
+          <div class="d-flex gap-2 mb-3 flex-wrap">
+            <button class="btn btn-primary" (click)="reloadData()" [disabled]="loading()">
+              <i class="fas fa-object-group me-2"></i>Object Syntax
+            </button>
+            <button class="btn btn-info" (click)="reloadWithArraySyntax()" [disabled]="loading()">
+              <i class="fas fa-list me-2"></i>Array Syntax
+            </button>
+            <button class="btn btn-success" (click)="reloadWithAsyncAwait()" [disabled]="loading()">
+              <i class="fas fa-clock me-2"></i>Async/Await
+            </button>
+            <button class="btn btn-secondary" (click)="demonstrateMixed()" [disabled]="loading()">
+              <i class="fas fa-random me-2"></i>Mixed Types
+            </button>
+            <button class="btn btn-warning" (click)="clearData()" [disabled]="loading()">
+              <i class="fas fa-trash me-2"></i>Clear Data
+            </button>
+          </div>
+          <p class="text-muted">Open browser console to see detailed operation logs</p>
+        </div>
+      </div>
+      
+      <!-- Loading Steps Display -->
+      <div *ngIf="loadingSteps().length > 0" class="alert alert-light">
+        <h6><strong>🔄 Operation Progress:</strong></h6>
+        <div class="loading-steps">
+          <div *ngFor="let step of loadingSteps()" class="step-item mb-1">
+            <small class="text-muted">{{step}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading()" class="card mb-4 border-info">
+    <div class="card-body text-center">
+      <div class="spinner-border text-primary me-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <strong>Loading data from multiple APIs in parallel...</strong>
+      <div class="mt-2">
+        <small class="text-muted">Total items loaded: {{totalItems()}}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="isError()" class="alert alert-danger">
+    <h5 class="alert-heading">❌ Error Occurred</h5>
+    <p class="mb-0">{{error()}}</p>
+  </div>
+
+  <!-- Data Display Section -->
+  <div *ngIf="hasData() && !loading()" class="row">
     <!-- Users Section -->
-    <div class="section">
-      <h3>👥 Users ({{ users().length }})</h3>
-      <div class="cards">
-        <div *ngFor="let user of users()" class="card user-card">
-          <h4>{{ user.name }}</h4>
-          <p><strong>Username:</strong> {{ user.username }}</p>
-          <p><strong>Email:</strong> {{ user.email }}</p>
+    <div class="col-md-4 mb-4">
+      <div class="card border-primary">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-users me-2"></i>Users ({{users().length}})
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="user-list" style="max-height: 300px; overflow-y: auto;">
+            <div *ngFor="let user of users()" class="border-bottom pb-2 mb-2">
+              <strong>{{user.name}}</strong>
+              <br>
+              <small class="text-muted">
+                <i class="fas fa-envelope me-1"></i>{{user.email}}
+              </small>
+              <br>
+              <small class="text-muted">
+                <i class="fas fa-user me-1"></i>@{{user.username}}
+              </small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Posts Section -->
-    <div class="section">
-      <h3>📝 Posts ({{ posts().length }})</h3>
-      <div class="cards">
-        <div *ngFor="let post of posts()" class="card post-card">
-          <h4>{{ post.title }}</h4>
-          <p>{{ post.body }}</p>
-          <small>User ID: {{ post.userId }}</small>
+    <div class="col-md-4 mb-4">
+      <div class="card border-success">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-file-alt me-2"></i>Posts ({{posts().length}})
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="post-list" style="max-height: 300px; overflow-y: auto;">
+            <div *ngFor="let post of posts()" class="border-bottom pb-2 mb-2">
+              <strong class="text-success">{{post.title}}</strong>
+              <br>
+              <small class="text-muted">{{post.body | slice:0:80}}...</small>
+              <br>
+              <small class="text-muted">
+                <i class="fas fa-user me-1"></i>User ID: {{post.userId}}
+              </small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Comments Section -->
-    <div class="section">
-      <h3>💬 Comments ({{ comments().length }})</h3>
-      <div class="cards">
-        <div *ngFor="let comment of comments()" class="card comment-card">
-          <h5>{{ comment.name }}</h5>
-          <p>{{ comment.body }}</p>
-          <small>Email: {{ comment.email }} | Post ID: {{ comment.postId }}</small>
+    <div class="col-md-4 mb-4">
+      <div class="card border-info">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-comments me-2"></i>Comments ({{comments().length}})
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="comment-list" style="max-height: 300px; overflow-y: auto;">
+            <div *ngFor="let comment of comments()" class="border-bottom pb-2 mb-2">
+              <strong class="text-info">{{comment.name}}</strong>
+              <br>
+              <small class="text-muted">{{comment.body | slice:0:80}}...</small>
+              <br>
+              <small class="text-muted">
+                <i class="fas fa-envelope me-1"></i>{{comment.email}}
+              </small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Info Section -->
-  <div class="info-section">
-    <h3>� Modern Angular Features Used</h3>
-    <ul>
-      <li><strong>Standalone Components:</strong> No need for module declarations</li>
-      <li><strong>Inject Function:</strong> Modern dependency injection without constructor</li>
-      <li><strong>Signals:</strong> Reactive state management with automatic change detection</li>
-      <li><strong>Computed Signals:</strong> Derived state that updates automatically</li>
-      <li><strong>RxJS Patterns:</strong> ForkJoin with proper error handling and finalization</li>
-      <li><strong>Async/Await:</strong> Promise-based approach for modern async handling</li>
-    </ul>
-    
-    <div class="code-examples">
-      <h4>💡 Key Syntax Differences:</h4>
-      <div class="syntax-comparison">
-        <div class="old-syntax">
-          <h5>Old Syntax:</h5>
-          <code>loading = false; // property</code><br>
-          <code>constructor(private http: HttpClient)</code><br>
-          <code>*ngIf="loading"</code>
+  <!-- Summary Statistics -->
+  <div *ngIf="hasData() && !loading()" class="card border-secondary">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Operation Summary</h5>
+    </div>
+    <div class="card-body">
+      <div class="row text-center">
+        <div class="col-3">
+          <div class="display-6 text-primary">{{users().length}}</div>
+          <small class="text-muted">Users Loaded</small>
         </div>
-        <div class="new-syntax">
-          <h5>New Syntax:</h5>
-          <code>loading = signal(false); // signal</code><br>
-          <code>private http = inject(HttpClient);</code><br>
-          <code>*ngIf="loading()"</code>
+        <div class="col-3">
+          <div class="display-6 text-success">{{posts().length}}</div>
+          <small class="text-muted">Posts Loaded</small>
         </div>
+        <div class="col-3">
+          <div class="display-6 text-info">{{comments().length}}</div>
+          <small class="text-muted">Comments Loaded</small>
+        </div>
+        <div class="col-3">
+          <div class="display-6 text-warning">{{totalItems()}}</div>
+          <small class="text-muted">Total Items</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="card border-danger mt-4">
+    <div class="card-header bg-danger text-white">
+      <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Best Practices</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-warning">
+        <h5><strong>⚡ ForkJoin Best Practices:</strong></h5>
+        <ul class="mb-0">
+          <li><strong>Error Handling:</strong> Use catchError for individual observables to prevent complete failure</li>
+          <li><strong>Performance:</strong> Perfect for parallel API calls that need to complete together</li>
+          <li><strong>Completion Required:</strong> All source observables MUST complete (not infinite streams)</li>
+          <li><strong>Fail Fast:</strong> If any observable errors, the entire forkJoin fails unless handled</li>
+        </ul>
       </div>
     </div>
   </div>

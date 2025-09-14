@@ -1,56 +1,178 @@
-<div class="my-3">
-  <h2>Of & From</h2>
-  <br />
-  <strong>Of (Ex-1)</strong>
-  <div class="row">
-    <div class="col md-6">
-      <p class="bg-light py-3 px-3 border rounded">
-        <strong>Data:</strong>OF ('shivam','Ram','Shyam','Rahul','Rajesh')
-      </p>
-      <hr />
-      <div *ngIf="isLoading; else notLoadingBlock">Loading...</div>
-      
-      <ng-template #notLoadingBlock>
-        <ul id="elContainer"></ul>
-      </ng-template>
+<div class="container-fluid p-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">
+      <i class="fas fa-code-branch me-2"></i>OF & FROM Operators
+    </h1>
+    <button class="btn btn-outline-primary" (click)="goBackToDashboard()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Operator Definition Section -->
+  <div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0"><i class="fas fa-book me-2"></i>What are OF & FROM?</h3>
     </div>
-    <div class="col md-6">
-      <p class="bg-light py-3 px-3 border rounded">
-        <strong>Data2:</strong>OF
-        (&#123;'name':'shivam','age':25,'city':'Delhi'&#125;)
-      </p>
-      <hr />
-      <ul *ngIf="obsMsg && obsMsg.length > 0">
-        <li *ngFor="let item of obsMsg">{{ item.name }} -{{ item.age }}</li>
-      </ul>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong>Definition:</strong></h5>
+        <p class="mb-2">{{operatorDefinition}}</p>
+        <div class="bg-light p-3 rounded mt-3">
+          <strong>Key Features:</strong>
+          <ul class="mb-0 mt-2">
+            <li>🎯 <strong>OF:</strong> Creates observables from individual values, objects, or mixed data types</li>
+            <li>🔄 <strong>FROM:</strong> Converts arrays, promises, iterables, and other async sources to observables</li>
+            <li>🚀 <strong>Creation Operators:</strong> Essential for starting observable chains</li>
+            <li>⚡ <strong>Synchronous & Async:</strong> Handle both immediate and promised data</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-  <br />
-  <strong>From (Ex-2)</strong>
-  <div class="row">
-    <div class="col md-4">
-      <strong>Array:</strong>
-      <p class="bg-light py-3 px-3 border rounded">
-        <strong>Data:</strong>Form (['shivam','Ram','Shyam','Rahul','Rajesh'])
-      </p>
-      <hr />
-      <ul id="elContainer2"></ul>
+
+  <!-- Real-Life Examples Section -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Real-Life Examples</h3>
     </div>
-    <div class="col md-4">
-      <strong>Promise:</strong>
-      <p class="bg-light py-3 px-3 border rounded">
-        <strong>Data: </strong>Promise to Obserable
-      </p>
-      <hr />
-      <ul id="elContainer3"></ul>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4 mb-3" *ngFor="let example of realLifeExamples">
+          <div class="border rounded p-3 h-100">
+            <h5 class="text-success">{{example.title}}</h5>
+            <p class="text-muted">{{example.description}}</p>
+            <pre class="bg-dark text-light p-2 rounded"><code>{{example.code}}</code></pre>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col md-4">
-      <strong>String:</strong>
-      <p class="bg-light py-3 px-3 border rounded">
-        <strong>Data: </strong>String to Obserable
-      </p>
-      <hr />
-      <ul id="elContainer4"></ul>
+  </div>
+
+  <!-- Interactive Demonstrations -->
+  <div class="card mb-4 border-warning">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-play me-2"></i>Interactive Demonstrations</h3>
+    </div>
+    <div class="card-body">
+      
+      <!-- Custom Demo Buttons -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">🎮 Custom Demonstrations</h5>
+          <div class="d-flex gap-2 mb-3 flex-wrap">
+            <button class="btn btn-primary" (click)="demonstrateOfWithCustomData()">
+              <i class="fas fa-database me-2"></i>OF with Custom Data
+            </button>
+            <button class="btn btn-info" (click)="demonstrateFromWithPromise()">
+              <i class="fas fa-clock me-2"></i>FROM with Promise
+            </button>
+            <button class="btn btn-success" (click)="demonstrateFromWithIterable()">
+              <i class="fas fa-list me-2"></i>FROM with Iterable
+            </button>
+          </div>
+          <div id="customContainer" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OF Operator Examples -->
+  <div class="card mb-4 border-info">
+    <div class="card-header bg-info text-white">
+      <h3 class="mb-0"><i class="fas fa-code me-2"></i>OF Operator Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Basic OF Usage</h5>
+          <div class="alert alert-light">
+            <div *ngIf="isLoading; else notLoadingBlock">
+              <i class="fas fa-spinner fa-spin me-2"></i>Loading...
+            </div>
+            <ng-template #notLoadingBlock>
+              <div id="ofContainer" class="border rounded p-3 bg-light" style="min-height: 200px; font-family: monospace; white-space: pre-line;"></div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h5>OF with Objects</h5>
+          <div class="alert alert-light">
+            <ul class="list-group" *ngIf="obsMsg && obsMsg.length > 0">
+              <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of obsMsg">
+                <div>
+                  <strong>{{item.name}}</strong> ({{item.role}})
+                  <small class="text-muted d-block">Age: {{item.age}}</small>
+                </div>
+                <span class="badge bg-primary rounded-pill">{{item.age}}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FROM Operator Examples -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-code me-2"></i>FROM Operator Examples</h3>
+    </div>
+    <div class="card-body">
+      <div id="fromContainer" class="border rounded p-3 bg-light" style="min-height: 200px; font-family: monospace; white-space: pre-line;"></div>
+    </div>
+  </div>
+
+  <!-- Real-Life Examples Demonstrations -->
+  <div class="card mb-4 border-secondary">
+    <div class="card-header bg-secondary text-white">
+      <h3 class="mb-0"><i class="fas fa-rocket me-2"></i>Real-Life Example Demonstrations</h3>
+    </div>
+    <div class="card-body">
+      
+      <!-- Example 1: Configuration -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-secondary mb-3">🔧 Configuration Management</h5>
+          <div id="example1Container" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+      <!-- Example 2: Data Processing -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-secondary mb-3">📊 Data Processing Pipeline</h5>
+          <div id="example2Container" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+      <!-- Example 3: API Integration -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-secondary mb-3">🌐 API Integration</h5>
+          <div id="example3Container" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Performance Tips -->
+  <div class="card border-danger">
+    <div class="card-header bg-danger text-white">
+      <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Important Notes</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-warning">
+        <h5><strong>⚠️ Best Practices:</strong></h5>
+        <ul class="mb-0">
+          <li><strong>OF vs FROM:</strong> Use OF for individual values, FROM for collections and promises</li>
+          <li><strong>Performance:</strong> FROM with large arrays creates many emissions - consider chunking</li>
+          <li><strong>Error Handling:</strong> FROM with promises automatically handles rejections as errors</li>
+          <li><strong>Type Safety:</strong> TypeScript infers types automatically for better development experience</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

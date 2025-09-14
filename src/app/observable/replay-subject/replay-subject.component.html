@@ -1,59 +1,207 @@
-<div class="my-3">
-  <h2>ReplaySubject :<strong>{{replaySubject}}</strong></h2>
+<div class="container-fluid p-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">
+      <i class="fas fa-history me-2"></i>ReplaySubject Operator
+    </h1>
+    <button class="btn btn-outline-primary" (click)="goBackToDashboard()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </button>
+  </div>
 
-  <hr />
-
-  <div class="row">
-    <div class="col">
-      <h3>Add Video</h3>
+  <!-- Operator Definition Section -->
+  <div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0"><i class="fas fa-book me-2"></i>What is ReplaySubject?</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong>Definition:</strong></h5>
+        <p class="mb-2">{{operatorDefinition}}</p>
+        <div class="bg-light p-3 rounded mt-3">
+          <strong>Key Features:</strong>
+          <ul class="mb-0 mt-2">
+            <li>🔄 <strong>Value Replay:</strong> Stores and replays last n values to new subscribers</li>
+            <li>💾 <strong>Buffer Management:</strong> Configurable buffer size for memory optimization</li>
+            <li>⏰ <strong>Time Window:</strong> Optional time-based value retention</li>
+            <li>🎯 <strong>Late Subscribers:</strong> Perfect for caching and late-joining components</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-  <hr />
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <input type="text" class="form-control" #userInput />
+
+  <!-- Real-Life Examples Section -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Real-Life Examples</h3>
     </div>
-    <div class="col-md-3">
-      <button class="btn btn-success" (click)="UserData(userInput.value)">
-        Add Video
-      </button>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4 mb-3" *ngFor="let example of realLifeExamples">
+          <div class="border rounded p-3 h-100">
+            <h5 class="text-success">{{example.title}}</h5>
+            <p class="text-muted">{{example.description}}</p>
+            <pre class="bg-dark text-light p-2 rounded"><code>{{example.code}}</code></pre>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <hr />
-  <div class="row">
-    <div class="col-md-4">
-      <strong>User 1</strong>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let item of userList1">
-          <strong>Video</strong>: {{ item }}
-        </li>
-      </ul>
+
+  <!-- Interactive Demonstrations -->
+  <div class="card mb-4 border-warning">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-play me-2"></i>Interactive Demonstrations</h3>
     </div>
-    <div class="col-md-4">
-      <strong>User 2</strong>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let item of userList2">
-          <strong>Video</strong>: {{ item }}
-        </li>
-      </ul>
-      <br />
-      <button (click)="subscribe2()" class="btn " [ngClass]="subscribeMod2?'btn-success':' btn-danger'">
-        {{subscribeMod2?'Subscribe':' UnSubscribe'}}
-        
-    </button>
+    <div class="card-body">
+      
+      <!-- Buffer Size Demo -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">📦 Buffer Size Configuration (Buffer: 3)</h5>
+          <p class="mb-3">Watch how only the last 3 values are replayed to new subscribers:</p>
+          <button class="btn btn-primary mb-3" (click)="addNewConfig()">
+            <i class="fas fa-plus me-2"></i>Add New Config
+          </button>
+          <div id="bufferContainer" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+      <!-- Session Cache Demo -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">👤 Session Cache (Buffer: 1)</h5>
+          <p class="mb-3">See how session data is cached and provided to late-loading components:</p>
+          <button class="btn btn-info mb-3" (click)="simulateNewSession()">
+            <i class="fas fa-user me-2"></i>Create New Session
+          </button>
+          <div id="sessionContainer" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
+      <!-- Activity Log Demo -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h5 class="text-warning mb-3">📋 Activity Log (Buffer: 5)</h5>
+          <p class="mb-3">Track recent user activities and replay them to new dashboard components:</p>
+          <button class="btn btn-success mb-3" (click)="logNewActivity()">
+            <i class="fas fa-clipboard-list me-2"></i>Log New Activity
+          </button>
+          <div id="activityContainer" class="border rounded p-3 bg-light" style="min-height: 120px; font-family: monospace; white-space: pre-line;"></div>
+        </div>
+      </div>
+
     </div>
-    <div class="col-md-4">
-      <strong>User 3</strong>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let item of userList3">
-          <strong>Video</strong>: {{ item }}
-        </li>
-      </ul>
-      <br />
-      <button (click)="subscribe3()" class="btn " [ngClass]="subscribeMod3?'btn-success':' btn-danger'">
-        {{subscribeMod3?'Subscribe':' UnSubscribe'}}
-        
-    </button>
+  </div>
+
+  <!-- Basic ReplaySubject Example -->
+  <div class="card mb-4 border-info">
+    <div class="card-header bg-info text-white">
+      <h3 class="mb-0"><i class="fas fa-code me-2"></i>Basic ReplaySubject Example</h3>
+    </div>
+    <div class="card-body">
+      <p class="mb-3">Watch how values emitted before subscription are still received by late subscribers:</p>
+      <div id="replayContainer" class="border rounded p-3 bg-light" style="min-height: 150px; font-family: monospace; white-space: pre-line;"></div>
+    </div>
+  </div>
+
+  <!-- Original Video Subscription Example -->
+  <div class="card mb-4 border-secondary">
+    <div class="card-header bg-secondary text-white">
+      <h3 class="mb-0"><i class="fas fa-video me-2"></i>Video Subscription Example</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info mb-4">
+        <strong>Concept:</strong> {{replaySubject}}
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <h5>Add Video</h5>
+          <div class="input-group">
+            <input type="text" class="form-control" #userInput placeholder="Enter video name" />
+            <button class="btn btn-success" (click)="UserData(userInput.value)">
+              <i class="fas fa-plus me-2"></i>Add Video
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <strong><i class="fas fa-user me-2"></i>User 1 (Always Subscribed)</strong>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let item of userList1">
+                  <i class="fas fa-video me-2 text-primary"></i><strong>Video:</strong> {{ item }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header" [ngClass]="subscribeMod2 ? 'bg-success text-white' : 'bg-warning text-dark'">
+              <strong><i class="fas fa-user me-2"></i>User 2 (Toggle Subscription)</strong>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item" *ngFor="let item of userList2">
+                  <i class="fas fa-video me-2 text-primary"></i><strong>Video:</strong> {{ item }}
+                </li>
+              </ul>
+              <button (click)="subscribe2()" class="btn btn-sm" 
+                      [ngClass]="subscribeMod2 ? 'btn-danger' : 'btn-success'">
+                <i class="fas" [ngClass]="subscribeMod2 ? 'fa-times' : 'fa-play'" ></i>
+                {{subscribeMod2 ? 'Unsubscribe' : 'Subscribe'}}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header" [ngClass]="subscribeMod3 ? 'bg-success text-white' : 'bg-warning text-dark'">
+              <strong><i class="fas fa-user me-2"></i>User 3 (Toggle Subscription)</strong>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item" *ngFor="let item of userList3">
+                  <i class="fas fa-video me-2 text-primary"></i><strong>Video:</strong> {{ item }}
+                </li>
+              </ul>
+              <button (click)="subscribe3()" class="btn btn-sm" 
+                      [ngClass]="subscribeMod3 ? 'btn-danger' : 'btn-success'">
+                <i class="fas" [ngClass]="subscribeMod3 ? 'fa-times' : 'fa-play'"></i>
+                {{subscribeMod3 ? 'Unsubscribe' : 'Subscribe'}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Tips -->
+  <div class="card border-danger">
+    <div class="card-header bg-danger text-white">
+      <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Important Notes</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-warning">
+        <h5><strong>⚠️ Best Practices:</strong></h5>
+        <ul class="mb-0">
+          <li><strong>Buffer Size:</strong> Choose appropriate buffer size to prevent memory issues</li>
+          <li><strong>Time Window:</strong> Use time-based replay for temporal data</li>
+          <li><strong>Memory Management:</strong> Large buffers can cause memory leaks</li>
+          <li><strong>Completion:</strong> Always complete ReplaySubject when done</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
