@@ -1,0 +1,28 @@
+/* CSS */
+.list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.list li {
+    flex: 0 0 calc(25% - 20px);
+    box-sizing: border-box;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    text-decoration: none;
+}
+.list li:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+.list li a {
+    text-decoration: none;
+}

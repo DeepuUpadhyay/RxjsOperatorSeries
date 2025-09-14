@@ -1,0 +1,35 @@
+<div class="my-3">
+  <h2>Custome Obseravle</h2>
+  <br />
+
+  <div class="row">
+    <div class="col md-6">
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Custom Obseravle manual (Ex-1)</strong>
+      </p>
+      <hr />
+      <ul [ngClass]="messageStatus=='completed'?'green-box':this.messageStatus=='error'? 'error-list':'' "
+       id="elContainer" >
+       
+      </ul>
+    </div>
+    <div class="col md-6">
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Custom Obs (Ex-2)</strong>
+      </p>
+      <hr />
+      <ul class="error-list" id="elContainer2">
+       
+      </ul>
+    </div>
+  </div>
+  <div class="col md-12">
+    <p class="bg-light py-3 px-3 border rounded">
+      <strong>Random Name (Ex-3)</strong>
+      'shivam','raj','rahul','rohit','mohit
+    </p>
+    <hr />
+    <p>Current Name:<strong>'shivam'</strong></p>
+    <span class="badge bg-success">Success</span>
+  </div>
+</div>

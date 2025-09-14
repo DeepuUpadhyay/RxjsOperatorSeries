@@ -1,0 +1,137 @@
+<div class="container-fluid p-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">
+      <i class="fas fa-exchange-alt me-2"></i>SwitchMap Operator
+    </h1>
+    <button class="btn btn-outline-primary" (click)="goBackToDashboard()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Operator Definition Section -->
+  <div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0"><i class="fas fa-book me-2"></i>What is SwitchMap?</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong>Definition:</strong></h5>
+        <p class="mb-2">{{operatorDefinition}}</p>
+        <div class="bg-light p-3 rounded mt-3">
+          <strong>Key Features:</strong>
+          <ul class="mb-0 mt-2">
+            <li>🔄 <strong>Cancellation:</strong> Automatically cancels previous inner observables</li>
+            <li>🎯 <strong>Latest Only:</strong> Only the most recent observable is active</li>
+            <li>🚀 <strong>Memory Efficient:</strong> Prevents memory leaks from abandoned subscriptions</li>
+            <li>⚡ <strong>Perfect for UI:</strong> Ideal for search, navigation, and user interactions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-Life Examples Section -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Real-Life Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-6 mb-3" *ngFor="let example of realLifeExamples">
+          <div class="border rounded p-3 h-100">
+            <h5 class="text-success">{{example.title}}</h5>
+            <p class="text-muted">{{example.description}}</p>
+            <pre class="bg-dark text-light p-2 rounded"><code>{{example.code}}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Examples Section -->
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-code me-2"></i>Interactive Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Basic Example -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-primary">Basic Example</h5>
+            <p class="small text-muted">Original switchMap demonstration</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Source:</strong> ['Tech', 'Comedy', 'News']
+            </div>
+            <ul id="elContainer" class="list-unstyled mt-2 small"></ul>
+            <ul id="elContainer2" class="list-unstyled mt-2 small"></ul>
+            <ul id="elContainer3" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+
+        <!-- Real-Life Example 1 -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-success">🔍 Search Autocomplete</h5>
+            <p class="small text-muted">Canceling previous searches for latest query</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Search:</strong> a → an → ang → angu → angul → angular
+            </div>
+            <ul id="elContainer4" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+
+        <!-- Real-Life Example 2 -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-info">👤 User Data Loading</h5>
+            <p class="small text-muted">Loading latest user data when navigating</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Users:</strong> ID 1, 2, 3, 4, 5
+            </div>
+            <ul id="elContainer5" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- When to Use Section -->
+  <div class="card border-info">
+    <div class="card-header bg-info text-white">
+      <h3 class="mb-0"><i class="fas fa-question-circle me-2"></i>When to Use SwitchMap?</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h5 class="text-success">✅ Use SwitchMap When:</h5>
+          <ul>
+            <li>Search autocomplete functionality</li>
+            <li>Route parameter changes</li>
+            <li>Only latest result matters</li>
+            <li>Need to cancel previous operations</li>
+            <li>User interactions that can change rapidly</li>
+            <li>Form field updates</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h5 class="text-danger">❌ Avoid SwitchMap When:</h5>
+          <ul>
+            <li>All results are important (use mergeMap)</li>
+            <li>Order matters (use concatMap)</li>
+            <li>Operations should not be cancelled</li>
+            <li>Working with critical data operations</li>
+            <li>Need to process all emissions</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="alert alert-warning mt-3">
+        <h6><strong>⚠️ Key Difference from MergeMap:</strong></h6>
+        <p class="mb-0">While MergeMap runs observables in parallel, SwitchMap cancels the previous one when a new value arrives. Think of it as "switching" to the latest operation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+

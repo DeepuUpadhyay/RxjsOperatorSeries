@@ -1,0 +1,132 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { PromiseComponent } from './promise/promise.component';
+import { AllComponent } from './observable/all/all.component';
+import { OfFromComponent } from './observable/of-from/of-from.component';
+import { PluckComponent } from './observable/pluck/pluck.component';
+import { FilterOperatorComponent } from './observable/filter-operator/filter-operator.component';
+import { TabComponent } from './tab/tab.component';
+import { TakeComponent } from './observable/take/take.component';
+import { RetryComponent } from './observable/retry/retry.component';
+
+import { DebounceComponent } from './observable/debounce/debounce.component';
+import { SubjectComponent } from './observable/subject/subject.component';
+import { ReplaySubjectComponent } from './observable/replay-subject/replay-subject.component';
+import { AsynchComponent } from './observable/asynch/asynch.component';
+import { MergeComponent } from './observable/merge/merge.component';
+import { ConcatComponent } from './observable/concat/concat.component';
+import { MergeMapComponent } from './observable/merge-map/merge-map.component';
+import { ConcatmapComponent } from './observable/concatmap/concatmap.component';
+import { SwitchMapComponent } from './observable/switch-map/switch-map.component';
+
+const routes: Routes = [
+  {
+    path: 'promise',
+    component: PromiseComponent,
+  },
+  {
+    path: 'obserable',
+    loadComponent: () => import('./observable/observable-dashboard/observable-dashboard.component').then(m => m.ObservableDashboardComponent),
+    children: [
+      {
+        path: '',
+        component: AllComponent,
+      },
+      {
+        path: 'fromEvent',
+        loadComponent: () => import('./observable/from-event/from-event.component').then(m => m.FromEventComponent),
+      },
+      {
+        path: 'interval',
+        loadComponent: () => import('./observable/interval-operator/interval-operator.component').then(m => m.IntervalOperatorComponent),
+      },
+      {
+        path: 'ofFrom',
+        component: OfFromComponent,
+      },
+      // {
+      //   path: 'toArray',
+      //   component: ToArrayComponent,
+      // },
+      // {
+      //   path: 'custome',
+      //   component: CustomObserableComponent,
+      // },
+      {
+        path: 'map',
+        loadComponent: () => import('./observable/map-component/map-component.component').then(m => m.MapComponentComponent),
+      },
+      {
+        path: 'pluck',
+        component: PluckComponent,
+      },
+      {
+        path: 'tab',
+        component: TabComponent,
+      },
+      {
+        path: 'filter',
+        component: FilterOperatorComponent,
+      },
+      {
+        path: 'take',
+        component: TakeComponent,
+      },
+      {
+        path: 'retry',
+        component: RetryComponent,
+      },
+      {
+        path: 'debounce',
+        component: DebounceComponent,
+      },
+      {
+        path: 'merge',
+        component: MergeComponent,
+      },
+      {
+        path: 'subject',
+        component: SubjectComponent,
+      },
+      {
+        path: 'reply-subject',
+        component: ReplaySubjectComponent,
+      },
+      {
+        path: 'async-subject',
+        component: AsynchComponent,
+      },
+      {
+        path: 'concateMap',
+        component: ConcatComponent,
+      },
+      {
+        path: 'mergeMap',
+        component: MergeMapComponent,
+      },
+      {
+        path: 'concateMaps',
+        component: ConcatmapComponent,
+      },
+      {
+        path: 'switchMap',
+        component: SwitchMapComponent,
+      },
+      {
+        path:'forkJoin',
+        loadComponent: () => import('./fork-join/fork-join.component').then(m => m.ForkJoinComponent)
+      }
+    ],
+  },
+  {
+    path: '**',
+    redirectTo: '/promise',
+    pathMatch: 'full',
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}

@@ -1,0 +1,168 @@
+<div class="container-fluid py-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card bg-primary text-white">
+        <div class="card-body text-center">
+          <h1 class="display-4 mb-3">Retry Operator</h1>
+          <p class="lead">Handle errors gracefully with automatic retries</p>
+          <button class="btn btn-outline-light" (click)="goBackToDashboard()">Back to Observables</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <h3>Operator Definition</h3>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <h5>What is Retry?</h5>
+            <p>{{ operatorDefinition }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h3>Real-life Examples</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4 mb-3" *ngFor="let example of realLifeExamples">
+              <div class="card border-success">
+                <div class="card-header">
+                  <h5 class="text-success">{{ example.title }}</h5>
+                </div>
+                <div class="card-body">
+                  <p>{{ example.description }}</p>
+                  <pre class="bg-light p-2"><code>{{ example.code }}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-warning text-dark">
+          <h3>Interactive API Retry Demo</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                  <h5>Real API Call with Retry</h5>
+                </div>
+                <div class="card-body">
+                  <p>Click to load data with retry mechanism</p>
+                  <button 
+                    class="btn btn-primary mb-3" 
+                    (click)="loadApiData()"
+                    [disabled]="lodeData">
+                    <span 
+                      class="spinner-border spinner-border-sm me-2"
+                      *ngIf="lodeData">
+                    </span>
+                    {{ lodeData ? 'Loading...' : 'Load User Data' }}
+                  </button>
+                  
+                  <div class="alert alert-info">
+                    <strong>Status:</strong> 
+                    <span [ngClass]="{'text-success':status=='Data Found','text-danger': status=='Error Found'}">
+                      {{ status }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                  <h5>Loaded Data</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-sm" *ngIf="users">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let user of users">
+                          <td>{{ user.id }}</td>
+                          <td>{{ user.name }}</td>
+                          <td>{{ user.email }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div *ngIf="!users" class="text-muted text-center p-3">
+                      No data loaded yet. Click the button above to start.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h3>Usage Guidelines & Best Practices</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <h5 class="text-success">When to Use Retry:</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <strong>Network requests:</strong> Handle temporary network failures
+                </li>
+                <li class="list-group-item">
+                  <strong>API endpoints:</strong> Deal with intermittent service issues
+                </li>
+                <li class="list-group-item">
+                  <strong>File uploads:</strong> Recover from interrupted transfers
+                </li>
+                <li class="list-group-item">
+                  <strong>Database calls:</strong> Handle connection timeouts
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-6">
+              <h5 class="text-warning">Best Practices:</h5>
+              <div class="alert alert-warning">
+                <ul class="mb-0">
+                  <li><strong>Set limits:</strong> Always use retry counts to prevent infinite loops</li>
+                  <li><strong>Add delays:</strong> Use exponential backoff to avoid overwhelming servers</li>
+                  <li><strong>Provide fallbacks:</strong> Use catchError for graceful degradation</li>
+                  <li><strong>Log attempts:</strong> Track retry attempts for debugging</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

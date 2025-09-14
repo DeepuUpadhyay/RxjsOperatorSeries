@@ -1,0 +1,321 @@
+<div class="map-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <h2>� TypeScript Data Transformation Hub</h2>
+    <p class="subtitle">
+      Transform, reshape, and format data using pure TypeScript methods instead
+      of RxJS map operator
+    </p>
+  </div>
+
+  <!-- Examples Grid -->
+  <div class="examples-grid">
+    <!-- Example 1: Basic Data Transformation -->
+    <div class="example-card">
+      <div class="card-header">
+        <h3>1. Basic Data Transformation</h3>
+        <p class="use-case">
+          Used in: User profiles, Data formatting, UI display
+        </p>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>
+            <strong>Scenario:</strong> Transform user data using TypeScript
+            methods instead of RxJS map
+          </p>
+          <button
+            class="action-btn transform-btn"
+            (click)="triggerDataTransform()"
+          >
+            🔄 Transform with TypeScript
+          </button>
+        </div>
+
+        <div class="output-section">
+          <h4>Transformed Data Output:</h4>
+          <div class="data-grid">
+            <div class="data-item" *ngFor="let user of transformedData()">
+              <div class="user-avatar">{{ user.initials }}</div>
+              <div class="user-info">
+                <strong>{{ user.displayName }}</strong>
+                <span class="domain-badge">{{ user.domain }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="output-container" id="transformContainer"></div>
+        </div>
+
+        <div class="implementation-info">
+          <h4>TypeScript Implementation Features:</h4>
+          <div class="info-list">
+            <p>✅ transformUserData() method processes raw user objects</p>
+            <p>✅ Creates display names by combining name and email</p>
+            <p>✅ Generates initials from user names automatically</p>
+            <p>✅ Extracts domain information from email addresses</p>
+            <p>✅ Observable subscription triggers transformation on data arrival</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 2: API Response Mapping -->
+    <div class="example-card">
+      <div class="card-header">
+        <h3>2. API Response Mapping</h3>
+        <p class="use-case">
+          Used in: REST APIs, Data normalization, Backend integration
+        </p>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>
+            <strong>Scenario:</strong> Transform API responses to UI-friendly
+            format
+          </p>
+          <button class="action-btn api-btn" (click)="triggerApiMapping()">
+            🌐 Fetch & Transform API Data
+          </button>
+        </div>
+
+        <div class="output-section">
+          <h4>User Profiles:</h4>
+          <div class="user-cards">
+            <div class="user-card" *ngFor="let user of users()">
+              <img [src]="user.avatar" [alt]="user.fullName" class="avatar" />
+              <h5>{{ user.fullName }}</h5>
+              <p class="workplace">{{ user.workplace }}</p>
+              <p class="location">📍 {{ user.location }}</p>
+              <p class="bio">{{ user.bio }}</p>
+            </div>
+          </div>
+          <div class="output-container" id="apiContainer"></div>
+        </div>
+
+        <div class="output-section">
+          <h4>Product Catalog:</h4>
+          <div class="product-grid">
+            <div class="product-card" *ngFor="let product of products()">
+              <h6>{{ product.name }}</h6>
+              <div class="price">{{ product.formattedPrice }}</div>
+              <span class="category-tag">{{ product.categoryTag }}</span>
+              <p class="description">{{ product.shortDescription }}</p>
+              <div class="rating">{{ product.ratingDisplay }}</div>
+              <span
+                [class]="
+                  'status-badge ' +
+                  (product.availability === 'In Stock' ? 'in-stock' : 'limited')
+                "
+              >
+                {{ product.availability }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 3: Search Suggestions -->
+    <div class="example-card">
+      <div class="card-header">
+        <h3>3. Search Suggestions Mapping</h3>
+        <p class="use-case">
+          Used in: Auto-complete, Search engines, Type-ahead
+        </p>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>
+            <strong>Scenario:</strong> Transform search queries into suggestion
+            lists
+          </p>
+          <div class="search-demo">
+            <div class="current-search">
+              <label>Current Search Query:</label>
+              <div class="search-display">{{ currentSearch() }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="output-section">
+          <h4>Auto-Generated Suggestions:</h4>
+          <div class="suggestions-list">
+            <div class="suggestion-item" *ngFor="let suggestion of searchSuggestions()">🔍 {{ suggestion }}</div>
+          </div>
+          <div class="output-container" id="searchContainer"></div>
+        </div>
+
+        <div class="implementation-info">
+          <h4>Implementation Approach:</h4>
+          <div class="info-list">
+            <p>✅ Pure TypeScript transformation methods</p>
+            <p>✅ Observable subscription with direct method calls</p>
+            <p>✅ No RxJS map operator dependencies</p>
+            <p>✅ Full type safety and IntelliSense support</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 4: Financial Data Transformation -->
+    <div class="example-card">
+      <div class="card-header">
+        <h3>4. Financial Data Transformation</h3>
+        <p class="use-case">
+          Used in: Trading platforms, Investment apps, Financial dashboards
+        </p>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>
+            <strong>Scenario:</strong> Transform raw price data into formatted
+            display
+          </p>
+        </div>
+
+        <div class="output-section">
+          <h4>Live Price Updates:</h4>
+          <div class="price-ticker">
+            <div class="price-card" *ngFor="let price of priceUpdates()" [style.border-left-color]="price.color">
+              <div class="symbol">{{ price.symbol }} {{ price.trend }}</div>
+              <div class="price-value">{{ price.formattedPrice }}</div>
+              <div class="change" [style.color]="price.color">
+                {{ price.formattedChange }} ({{ price.formattedPercent }})
+              </div>
+              <div class="volume">Vol: {{ price.formattedVolume }}</div>
+            </div>
+          </div>
+          <div class="output-container" id="priceContainer"></div>
+        </div>
+
+        <div class="implementation-info">
+          <h4>TypeScript Price Transformation:</h4>
+          <div class="info-list">
+            <p>✅ Format prices with currency symbols</p>
+            <p>✅ Calculate percentage changes</p>
+            <p>✅ Apply trend indicators and colors</p>
+            <p>✅ Format volume with readable numbers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 5: Complex Nested Data Mapping -->
+    <div class="example-card full-width">
+      <div class="card-header">
+        <h3>5. Complex Order Processing</h3>
+        <p class="use-case">
+          Used in: E-commerce, Order management, Complex data structures
+        </p>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>
+            <strong>Scenario:</strong> Transform complex nested order data for
+            dashboard display
+          </p>
+          <button
+            class="action-btn order-btn"
+            (click)="triggerComplexMapping()"
+          >
+            📦 Process Orders
+          </button>
+        </div>
+
+        <div class="output-section">
+          <h4>Order Processing Pipeline:</h4>
+          <div class="output-container" id="orderContainer"></div>
+        </div>
+
+        <div class="transformation-flow">
+          <h4>TypeScript Transformation Process:</h4>
+          <div class="flow-steps">
+            <div class="flow-step">
+              <h5>📥 Raw Order Data</h5>
+              <div class="step-description">
+                <p>Receive complex nested order objects from API</p>
+                <p>Contains customer, items, and shipping information</p>
+              </div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-step">
+              <h5>🔄 TypeScript Transformation</h5>
+              <div class="step-description">
+                <p>transformComplexOrderData() method processes the data</p>
+                <p>Calculates totals, formats prices, determines priority</p>
+              </div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-step">
+              <h5>📤 Formatted Output</h5>
+              <div class="step-description">
+                <p>Clean, formatted order summaries</p>
+                <p>Ready for UI display with proper formatting</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Implementation Info -->
+  <div class="implementation-info">
+    <h3>🛠️ Map Operator Implementation Guide</h3>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <h4>Data Transformation Patterns</h4>
+        <ul>
+          <li>Object property mapping</li>
+          <li>Array transformation</li>
+          <li>Data type conversion</li>
+          <li>Format standardization</li>
+          <li>Calculated field creation</li>
+        </ul>
+      </div>
+
+      <div class="tech-item">
+        <h4>API Response Mapping</h4>
+        <ul>
+          <li>REST API normalization</li>
+          <li>GraphQL response shaping</li>
+          <li>Backend data formatting</li>
+          <li>Error response handling</li>
+          <li>Pagination data mapping</li>
+        </ul>
+      </div>
+
+      <div class="tech-item">
+        <h4>Real-world Use Cases</h4>
+        <ul>
+          <li>User interface data binding</li>
+          <li>Financial data formatting</li>
+          <li>Search result processing</li>
+          <li>E-commerce product display</li>
+          <li>Dashboard metrics calculation</li>
+        </ul>
+      </div>
+
+      <div class="tech-item">
+        <h4>Performance Benefits</h4>
+        <ul>
+          <li>Reactive data transformation</li>
+          <li>Memory efficient processing</li>
+          <li>Type-safe operations</li>
+          <li>Composable transformations</li>
+          <li>Error boundary handling</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Number Transformation Demo -->
+  <div class="output-section">
+    <h4>📊 Number Transformation Stream:</h4>
+    <div class="output-container" id="numberContainer"></div>
+  </div>
+</div>

@@ -1,0 +1,154 @@
+<div class="container-fluid p-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">
+      <i class="fas fa-link me-2"></i>ConcatMap Operator
+    </h1>
+    <button class="btn btn-outline-primary" (click)="goBackToDashboard()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Operator Definition Section -->
+  <div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0"><i class="fas fa-book me-2"></i>What is ConcatMap?</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong>Definition:</strong></h5>
+        <p class="mb-2">{{operatorDefinition}}</p>
+        <div class="bg-light p-3 rounded mt-3">
+          <strong>Key Features:</strong>
+          <ul class="mb-0 mt-2">
+            <li>🔄 <strong>Sequential Processing:</strong> Waits for each inner observable to complete</li>
+            <li>📋 <strong>Order Preservation:</strong> Maintains the original emission order</li>
+            <li>⏳ <strong>No Concurrency:</strong> Only one inner observable active at a time</li>
+            <li>🎯 <strong>Perfect for Dependencies:</strong> When operations depend on previous results</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-Life Examples Section -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Real-Life Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4 mb-3" *ngFor="let example of realLifeExamples">
+          <div class="border rounded p-3 h-100">
+            <h5 class="text-success">{{example.title}}</h5>
+            <p class="text-muted">{{example.description}}</p>
+            <pre class="bg-dark text-light p-2 rounded"><code>{{example.code}}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Examples Section -->
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-code me-2"></i>Interactive Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Basic Example -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-primary">Basic Example</h5>
+            <p class="small text-muted">Original concatMap demonstration</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Source:</strong> ['Tech', 'Comedy', 'News']
+            </div>
+            <ul id="elContainer" class="list-unstyled mt-2 small"></ul>
+            <ul id="elContainer2" class="list-unstyled mt-2 small"></ul>
+            <ul id="elContainer3" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+
+        <!-- Real-Life Example 1 -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-success">📁 Sequential File Processing</h5>
+            <p class="small text-muted">Processing files one by one in order</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Files:</strong> config.json → data.csv → report.pdf
+            </div>
+            <ul id="elContainer4" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+
+        <!-- Real-Life Example 2 -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-info">🗄️ Database Operations</h5>
+            <p class="small text-muted">Sequential database transactions</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Operations:</strong> INSERT → UPDATE → CREATE
+            </div>
+            <ul id="elContainer5" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Example Row -->
+      <div class="row">
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-warning">🎬 Animation Sequence</h5>
+            <p class="small text-muted">Playing animations in order</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Sequence:</strong> fadeIn → slideUp → bounce
+            </div>
+            <ul id="elContainer6" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- When to Use Section -->
+  <div class="card border-info">
+    <div class="card-header bg-info text-white">
+      <h3 class="mb-0"><i class="fas fa-question-circle me-2"></i>When to Use ConcatMap?</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h5 class="text-success">✅ Use ConcatMap When:</h5>
+          <ul>
+            <li>Order of operations is critical</li>
+            <li>Each operation depends on the previous</li>
+            <li>Processing files sequentially</li>
+            <li>Database transactions in order</li>
+            <li>Animation sequences</li>
+            <li>Step-by-step workflows</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h5 class="text-danger">❌ Avoid ConcatMap When:</h5>
+          <ul>
+            <li>Operations can run in parallel (use mergeMap)</li>
+            <li>Only latest result matters (use switchMap)</li>
+            <li>Performance is critical and order doesn't matter</li>
+            <li>Working with independent operations</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="alert alert-warning mt-3">
+        <h6><strong>🎯 Key Difference from Other Maps:</strong></h6>
+        <ul class="mb-0">
+          <li><strong>MergeMap:</strong> Parallel execution, results arrive based on completion time</li>
+          <li><strong>SwitchMap:</strong> Cancels previous, only latest is active</li>
+          <li><strong>ConcatMap:</strong> Sequential execution, maintains order, waits for completion</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+

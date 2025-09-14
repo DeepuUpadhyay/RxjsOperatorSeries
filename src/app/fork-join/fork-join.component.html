@@ -1,0 +1,129 @@
+<div class="fork-join-container">
+  <div class="header">
+    <h2>Modern Angular ForkJoin Example</h2>
+    <p>This example demonstrates forkJoin using Angular's latest features: standalone components, signals, and inject function.</p>
+    
+    <div class="button-group">
+      <button (click)="reloadData()" [disabled]="loading()" class="btn btn-primary">
+        Object Syntax (Signals)
+      </button>
+      <button (click)="reloadWithArraySyntax()" [disabled]="loading()" class="btn btn-secondary">
+        Array Syntax (Signals)
+      </button>
+      <button (click)="reloadWithAsyncAwait()" [disabled]="loading()" class="btn btn-success">
+        Async/Await Pattern
+      </button>
+      <button (click)="clearData()" [disabled]="loading()" class="btn btn-warning">
+        Clear Data
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading()" class="loading">
+    <div class="spinner"></div>
+    <p>Loading data from multiple APIs in parallel...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="isError()" class="error">
+    <h3>❌ Error</h3>
+    <p>{{ error() }}</p>
+    <button (click)="reloadData()" class="btn btn-primary">Try Again</button>
+  </div>
+
+  <!-- Statistics Section -->
+  <div *ngIf="hasData() && !loading()" class="stats-section">
+    <div class="stat-card">
+      <h3>📊 Data Statistics</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number">{{ users().length }}</span>
+          <span class="stat-label">Users</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ posts().length }}</span>
+          <span class="stat-label">Posts</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ comments().length }}</span>
+          <span class="stat-label">Comments</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ totalItems() }}</span>
+          <span class="stat-label">Total Items</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success State -->
+  <div *ngIf="!loading() && !isError()" class="results">
+    <!-- Users Section -->
+    <div class="section">
+      <h3>👥 Users ({{ users().length }})</h3>
+      <div class="cards">
+        <div *ngFor="let user of users()" class="card user-card">
+          <h4>{{ user.name }}</h4>
+          <p><strong>Username:</strong> {{ user.username }}</p>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Posts Section -->
+    <div class="section">
+      <h3>📝 Posts ({{ posts().length }})</h3>
+      <div class="cards">
+        <div *ngFor="let post of posts()" class="card post-card">
+          <h4>{{ post.title }}</h4>
+          <p>{{ post.body }}</p>
+          <small>User ID: {{ post.userId }}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="section">
+      <h3>💬 Comments ({{ comments().length }})</h3>
+      <div class="cards">
+        <div *ngFor="let comment of comments()" class="card comment-card">
+          <h5>{{ comment.name }}</h5>
+          <p>{{ comment.body }}</p>
+          <small>Email: {{ comment.email }} | Post ID: {{ comment.postId }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Section -->
+  <div class="info-section">
+    <h3>� Modern Angular Features Used</h3>
+    <ul>
+      <li><strong>Standalone Components:</strong> No need for module declarations</li>
+      <li><strong>Inject Function:</strong> Modern dependency injection without constructor</li>
+      <li><strong>Signals:</strong> Reactive state management with automatic change detection</li>
+      <li><strong>Computed Signals:</strong> Derived state that updates automatically</li>
+      <li><strong>RxJS Patterns:</strong> ForkJoin with proper error handling and finalization</li>
+      <li><strong>Async/Await:</strong> Promise-based approach for modern async handling</li>
+    </ul>
+    
+    <div class="code-examples">
+      <h4>💡 Key Syntax Differences:</h4>
+      <div class="syntax-comparison">
+        <div class="old-syntax">
+          <h5>Old Syntax:</h5>
+          <code>loading = false; // property</code><br>
+          <code>constructor(private http: HttpClient)</code><br>
+          <code>*ngIf="loading"</code>
+        </div>
+        <div class="new-syntax">
+          <h5>New Syntax:</h5>
+          <code>loading = signal(false); // signal</code><br>
+          <code>private http = inject(HttpClient);</code><br>
+          <code>*ngIf="loading()"</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

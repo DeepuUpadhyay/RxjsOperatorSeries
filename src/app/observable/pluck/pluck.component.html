@@ -1,0 +1,54 @@
+<div class="my-3">
+  <h2>Pluck Operator</h2>
+  <br />
+  <div class="row">
+    <div class="col md-4">
+      <strong>Ex-1</strong>
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data:pluck by property</strong>
+      </p>
+      <hr />
+      <table>
+        <tr>
+          <th>First Name</th>
+          <th>Skills</th>
+        </tr>
+        <tr *ngFor="let user of mesg1" class="text-success">
+          <td>{{ user }}</td>
+          <td>{{ user?.skills }}</td>
+        </tr>
+      </table>
+      <!-- <p><strong  class="text-success">{{mesg1}}</strong> </p> -->
+    </div>
+    <div class="col md-4">
+      <strong>Ex-2</strong>
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data:pluck by nested property</strong>
+      </p>
+      <table>
+      <tr>
+        <th>Resedence</th>
+      </tr>
+      <tr *ngFor="let user of mesg2" class="text-success">
+        <td>{{ user }}</td>
+      </tr>
+    </table>
+      <hr />
+    </div>
+    <div class="col md-4">
+      <strong>Ex-3</strong>
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data: </strong>
+      </p>
+      <hr />
+      <table>
+        <tr>
+          <th>Skills</th>
+        </tr>
+        <tr *ngFor="let user of mesg3" class="text-success">
+          <td>{{ user }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

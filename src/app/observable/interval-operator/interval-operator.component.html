@@ -1,0 +1,547 @@
+<div class="interval-container">
+  <div class="header">
+    <h2>🚀 Modern Angular + RxJS Interval & Timer</h2>
+    <p>Complete real-world examples with latest Angular features (Signals, Standalone Components, inject())</p>
+    <div class="feature-status">
+      <span [class.active]="hasActiveFeatures()">
+        {{ hasActiveFeatures() ? '🟢 Features Running' : '🔴 All Stopped' }}
+      </span>
+      <button 
+        (click)="stopAllFeatures()" 
+        [disabled]="!hasActiveFeatures()"
+        class="btn btn-danger btn-sm ms-3">
+        Stop All
+      </button>
+    </div>
+  </div>
+
+  <!-- Original Basic Example -->
+  <div class="example-section">
+    <h3>📹 Basic Example: Video Upload Notifications</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> YouTube/TikTok style upload notifications to multiple subscribers
+    </p>
+    <div class="current-message" *ngIf="message()">
+      <strong>Current Status:</strong> {{ message() }}
+    </div>
+    <div class="d-flex flex-wrap">
+      <div class="card me-3 mb-3" style="width: 16rem">
+        <div class="card-body">
+          <h5 class="card-title" style="color: var(--bs-warning);">User 1</h5>
+          <hr>
+          <ul id="elContainer" class="list-group list-group-flush"></ul>
+        </div>
+      </div>
+      <div class="card me-3 mb-3" style="width: 16rem">
+        <div class="card-body">
+          <h5 class="card-title" style="color: var(--bs-danger);">User 2</h5>
+          <hr>
+          <ul id="elContainer2" class="list-group list-group-flush"></ul>
+        </div>
+      </div>
+      <div class="card me-3 mb-3" style="width: 16rem">
+        <div class="card-body">
+          <h5 class="card-title">User 3</h5>
+          <hr>
+          <ul id="elContainer3" class="list-group list-group-flush"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-life Example 1: Auto-refresh Clock -->
+  <div class="example-section">
+    <h3>🕒 Real-time Clock (Dashboard/Trading Platform)</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> Live time display in admin dashboards, trading platforms, booking systems<br>
+      <strong>Benefits:</strong> Always current time, automatic updates, no manual refresh needed
+    </p>
+    <div class="control-panel">
+      <button 
+        (click)="startAutoRefresh()" 
+        [disabled]="autoRefreshActive()"
+        class="btn btn-success me-2">
+        Start Clock
+      </button>
+      <button 
+        (click)="stopAutoRefresh()" 
+        [disabled]="!autoRefreshActive()"
+        class="btn btn-danger">
+        Stop Clock
+      </button>
+    </div>
+    <div class="clock-display">
+      <h2 class="current-time">{{ currentTime() | date:'full' }}</h2>
+      <span class="status" [class.active]="autoRefreshActive()">
+        {{ autoRefreshActive() ? '🟢 Live Updates' : '🔴 Static Display' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Real-life Example 2: Stock Price Updates -->
+  <div class="example-section">
+    <h3>📈 Live Stock Prices (Financial Trading App)</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> Real-time stock prices in trading apps, portfolio trackers, financial dashboards<br>
+      <strong>Benefits:</strong> Live market data, trend indicators, automatic price updates
+    </p>
+    <div class="control-panel">
+      <button 
+        (click)="startStockUpdates()" 
+        [disabled]="stockUpdateActive()"
+        class="btn btn-primary me-2">
+        Start Stock Feed
+      </button>
+      <button 
+        (click)="stopStockUpdates()" 
+        [disabled]="!stockUpdateActive()"
+        class="btn btn-secondary">
+        Stop Feed
+      </button>
+    </div>
+    <div class="stock-container" *ngIf="stockPrices().length > 0">
+      <div class="stock-grid">
+        <div 
+          *ngFor="let stock of stockPrices()" 
+          class="stock-card"
+          [class.positive]="stock.change >= 0"
+          [class.negative]="stock.change < 0">
+          <div class="stock-symbol">{{ stock.symbol }}</div>
+          <div class="stock-price">${{ stock.price }}</div>
+          <div class="stock-change">
+            {{ stock.change >= 0 ? '+' : '' }}{{ stock.change }}
+            <span class="trend-icon">{{ stock.trend === 'up' ? '📈' : stock.trend === 'down' ? '📉' : '➡️' }}</span>
+          </div>
+          <div class="stock-time">{{ stock.timestamp | date:'short' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-life Example 3: Notification System -->
+  <div class="example-section">
+    <h3>🔔 Live Notifications (Social Media/Enterprise Apps)</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> WhatsApp, Slack, Facebook notifications, system alerts, user activity feeds<br>
+      <strong>Benefits:</strong> Real-time updates, user engagement, instant communication
+    </p>
+    <div class="control-panel">
+      <button 
+        (click)="startNotifications()" 
+        [disabled]="notificationActive()"
+        class="btn btn-info me-2">
+        Start Notifications
+      </button>
+      <button 
+        (click)="stopNotifications()" 
+        [disabled]="!notificationActive()"
+        class="btn btn-warning">
+        Stop Notifications
+      </button>
+    </div>
+    <div class="notification-container">
+      <div 
+        *ngFor="let notification of notifications()" 
+        class="notification"
+        [ngClass]="getNotificationClass(notification.type)">
+        <div class="notification-content">
+          <div class="notification-header">
+            <span class="notification-source">{{ notification.source }}</span>
+            <span class="notification-time">{{ notification.timestamp | date:'short' }}</span>
+          </div>
+          <div class="notification-message">{{ notification.message }}</div>
+        </div>
+        <button 
+          (click)="removeNotification(notification.id)"
+          class="notification-close">
+          ✕
+        </button>
+      </div>
+      <div *ngIf="notifications().length === 0 && notificationActive()" class="no-notifications">
+        Waiting for new notifications...
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-life Example 4: Progress Bar -->
+  <div class="example-section">
+    <h3>📊 File Upload Progress (Cloud Storage/CDN)</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> File uploads to AWS S3, Google Drive, Dropbox, video processing progress<br>
+      <strong>Benefits:</strong> User feedback, upload status, progress tracking
+    </p>
+    <div class="control-panel">
+      <button 
+        (click)="startProgress()" 
+        [disabled]="progressActive()"
+        class="btn btn-success me-2">
+        Start Upload
+      </button>
+      <button 
+        (click)="resetProgress()" 
+        [disabled]="progressActive()"
+        class="btn btn-outline-secondary">
+        Reset
+      </button>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar" 
+             [style.width.%]="progressValue()"
+             [style.background-color]="getProgressColor()"></div>
+      </div>
+      <div class="progress-text">
+        {{ progressValue().toFixed(1) }}% 
+        {{ progressValue() === 100 ? '✅ Complete!' : (progressActive() ? '⏳ Uploading...' : '⏸️ Paused') }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-life Example 5: Auto-save Feature -->
+  <div class="example-section">
+    <h3>💾 Auto-save Feature (Document Editor/Forms)</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> Google Docs, Microsoft Office 365, form drafts, blog editors<br>
+      <strong>Benefits:</strong> Data protection, automatic backups, user peace of mind
+    </p>
+    <div class="control-panel">
+      <button 
+        (click)="startAutoSave()" 
+        [disabled]="autoSaveActive()"
+        class="btn btn-primary me-2">
+        Enable Auto-save
+      </button>
+      <button 
+        (click)="stopAutoSave()" 
+        [disabled]="!autoSaveActive()"
+        class="btn btn-danger">
+        Disable Auto-save
+      </button>
+    </div>
+    <div class="autosave-info">
+      <div class="autosave-status">
+        <span [class.active]="autoSaveActive()">
+          {{ autoSaveActive() ? '🟢 Auto-save: ON' : '🔴 Auto-save: OFF' }}
+        </span>
+      </div>
+      <div class="autosave-details" *ngIf="autoSaveActive() || lastSaved()">
+        <p>Total Saves: {{ autoSaveCounter() }}</p>
+        <p *ngIf="lastSaved()">Last saved: {{ lastSaved() | date:'medium' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-life Example 6: System Health Monitoring -->
+  <div class="example-section">
+    <h3>🖥️ System Health Monitoring (DevOps/Infrastructure)</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> Server monitoring, AWS CloudWatch, system dashboards, performance tracking<br>
+      <strong>Benefits:</strong> Proactive monitoring, system alerts, performance optimization
+    </p>
+    <div class="control-panel">
+      <button 
+        (click)="startSystemMonitoring()" 
+        [disabled]="monitoringActive()"
+        class="btn btn-info me-2">
+        Start Monitoring
+      </button>
+      <button 
+        (click)="stopSystemMonitoring()" 
+        [disabled]="!monitoringActive()"
+        class="btn btn-secondary">
+        Stop Monitoring
+      </button>
+    </div>
+    <div class="system-health" *ngIf="systemHealth()">
+      <div class="health-status">
+        <h4 [style.color]="getSystemHealthColor()">
+          System Status: {{ systemStatus().toUpperCase() }}
+        </h4>
+      </div>
+      <div class="health-metrics">
+        <div class="metric">
+          <label>CPU Usage</label>
+          <div class="metric-bar">
+            <div class="metric-fill" [style.width.%]="systemHealth()!.cpu" [style.background-color]="systemHealth()!.cpu > 80 ? '#dc3545' : systemHealth()!.cpu > 60 ? '#ffc107' : '#28a745'"></div>
+          </div>
+          <span>{{ systemHealth()!.cpu }}%</span>
+        </div>
+        <div class="metric">
+          <label>Memory Usage</label>
+          <div class="metric-bar">
+            <div class="metric-fill" [style.width.%]="systemHealth()!.memory" [style.background-color]="systemHealth()!.memory > 80 ? '#dc3545' : systemHealth()!.memory > 60 ? '#ffc107' : '#28a745'"></div>
+          </div>
+          <span>{{ systemHealth()!.memory }}%</span>
+        </div>
+        <div class="metric">
+          <label>Disk Usage</label>
+          <div class="metric-bar">
+            <div class="metric-fill" [style.width.%]="systemHealth()!.disk" [style.background-color]="systemHealth()!.disk > 80 ? '#dc3545' : systemHealth()!.disk > 60 ? '#ffc107' : '#28a745'"></div>
+          </div>
+          <span>{{ systemHealth()!.disk }}%</span>
+        </div>
+        <div class="metric">
+          <label>Network Usage</label>
+          <div class="metric-bar">
+            <div class="metric-fill" [style.width.%]="systemHealth()!.network" [style.background-color]="systemHealth()!.network > 80 ? '#dc3545' : systemHealth()!.network > 60 ? '#ffc107' : '#28a745'"></div>
+          </div>
+          <span>{{ systemHealth()!.network }}%</span>
+        </div>
+      </div>
+      <div class="last-updated">
+        Last updated: {{ systemHealth()!.timestamp | date:'medium' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-life Example 7: Real-time Analytics -->
+  <div class="example-section">
+    <h3>📊 Real-time Analytics Dashboard (Business Intelligence)</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> Google Analytics, e-commerce dashboards, business metrics, KPI tracking<br>
+      <strong>Benefits:</strong> Real-time insights, business monitoring, data-driven decisions
+    </p>
+    <div class="control-panel">
+      <button 
+        (click)="startAnalytics()" 
+        [disabled]="analyticsActive()"
+        class="btn btn-success me-2">
+        Start Analytics
+      </button>
+      <button 
+        (click)="stopAnalytics()" 
+        [disabled]="!analyticsActive()"
+        class="btn btn-danger">
+        Stop Analytics
+      </button>
+    </div>
+    <div class="analytics-dashboard" *ngIf="analyticsData()">
+      <div class="analytics-grid">
+        <div class="analytics-card">
+          <div class="analytics-icon">👥</div>
+          <div class="analytics-value">{{ analyticsData()!.activeUsers }}</div>
+          <div class="analytics-label">Active Users</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-icon">🛒</div>
+          <div class="analytics-value">{{ analyticsData()!.newOrders }}</div>
+          <div class="analytics-label">New Orders</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-icon">💰</div>
+          <div class="analytics-value">${{ analyticsData()!.revenue | number:'1.2-2' }}</div>
+          <div class="analytics-label">Revenue</div>
+        </div>
+      </div>
+      <div class="analytics-timestamp">
+        Updated: {{ analyticsData()!.timestamp | date:'short' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-life Example 8: Chat Message Counter -->
+  <div class="example-section">
+    <h3>💬 Chat Message Counter (Messaging Apps)</h3>
+    <p class="example-description">
+      <strong>Use Case:</strong> WhatsApp, Telegram, Slack message notifications, unread counters<br>
+      <strong>Benefits:</strong> User engagement, notification badges, communication tracking
+    </p>
+    <div class="control-panel">
+      <button 
+        (click)="startChatSimulation()" 
+        [disabled]="chatActive()"
+        class="btn btn-info me-2">
+        Simulate Messages
+      </button>
+      <button 
+        (click)="stopChatSimulation()" 
+        [disabled]="!chatActive()"
+        class="btn btn-secondary me-2">
+        Stop Simulation
+      </button>
+      <button 
+        (click)="markMessagesAsRead()" 
+        [disabled]="newMessages() === 0"
+        class="btn btn-success">
+        Mark as Read
+      </button>
+    </div>
+    <div class="chat-counter">
+      <div class="message-badge" [class.has-messages]="newMessages() > 0">
+        <div class="badge-icon">💬</div>
+        <div class="badge-count" *ngIf="newMessages() > 0">{{ newMessages() }}</div>
+      </div>
+      <div class="message-text">
+        {{ newMessages() === 0 ? 'No new messages' : newMessages() + ' new message' + (newMessages() > 1 ? 's' : '') }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Benefits and Use Cases Section -->
+  <div class="benefits-section">
+    <h3>🎯 Where & How Interval/Timer is Used</h3>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <h4>🏢 Enterprise Applications</h4>
+        <ul>
+          <li>System monitoring dashboards</li>
+          <li>Real-time data synchronization</li>
+          <li>Automated report generation</li>
+          <li>Health check systems</li>
+        </ul>
+      </div>
+      <div class="benefit-card">
+        <h4>💻 Web Applications</h4>
+        <ul>
+          <li>Auto-save in editors (Google Docs)</li>
+          <li>Live chat message updates</li>
+          <li>Progress bars for uploads</li>
+          <li>Session timeout warnings</li>
+        </ul>
+      </div>
+      <div class="benefit-card">
+        <h4>📱 Mobile Apps</h4>
+        <ul>
+          <li>Location tracking updates</li>
+          <li>Social media feed refresh</li>
+          <li>Push notification polling</li>
+          <li>Background sync operations</li>
+        </ul>
+      </div>
+      <div class="benefit-card">
+        <h4>💰 Financial Applications</h4>
+        <ul>
+          <li>Real-time stock price feeds</li>
+          <li>Trading platform updates</li>
+          <li>Currency exchange rates</li>
+          <li>Portfolio value calculations</li>
+        </ul>
+      </div>
+      <div class="benefit-card">
+        <h4>🎮 Gaming & Entertainment</h4>
+        <ul>
+          <li>Game state synchronization</li>
+          <li>Live score updates</li>
+          <li>Player activity feeds</li>
+          <li>In-game timers</li>
+        </ul>
+      </div>
+      <div class="benefit-card">
+        <h4>🛒 E-commerce</h4>
+        <ul>
+          <li>Inventory level updates</li>
+          <li>Cart abandonment timers</li>
+          <li>Flash sale countdowns</li>
+          <li>Order status tracking</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical Implementation -->
+  <div class="info-section">
+    <h3>🔧 Modern Angular + RxJS Implementation</h3>
+    <div class="implementation-grid">
+      <div class="implementation-card modern">
+        <h4>🚀 Modern Angular (v17+)</h4>
+        <div class="code-example">
+          <h5>Standalone Component:</h5>
+          <code>
+@Component({{ '{' }}<br>
+&nbsp;&nbsp;standalone: true,<br>
+&nbsp;&nbsp;imports: [CommonModule]<br>
+{{ '}' }})
+          </code>
+        </div>
+        <div class="code-example">
+          <h5>Signals:</h5>
+          <code>
+loading = signal(false);<br>
+data = signal&lt;Data[]&gt;([]);<br>
+// Template: {{ '{{' }} loading() {{ '}}' }}
+          </code>
+        </div>
+        <div class="code-example">
+          <h5>Inject Function:</h5>
+          <code>
+private http = inject(HttpClient);<br>
+private service = inject(DataService);
+          </code>
+        </div>
+      </div>
+
+      <div class="implementation-card">
+        <h4>⏱️ Interval Operators</h4>
+        <div class="code-example">
+          <h5>interval():</h5>
+          <code>
+interval(1000) // Every 1 second<br>
+&nbsp;&nbsp;.pipe(takeWhile(x => x &lt; 10))<br>
+&nbsp;&nbsp;.subscribe(value => ...)
+          </code>
+        </div>
+        <div class="code-example">
+          <h5>timer():</h5>
+          <code>
+timer(3000, 1000) // 3s delay, then 1s<br>
+&nbsp;&nbsp;.pipe(finalize(() => cleanup()))<br>
+&nbsp;&nbsp;.subscribe(value => ...)
+          </code>
+        </div>
+      </div>
+
+      <div class="implementation-card">
+        <h4>🛡️ Best Practices</h4>
+        <ul>
+          <li><strong>Memory Management:</strong> Always unsubscribe in ngOnDestroy()</li>
+          <li><strong>Error Handling:</strong> Use catchError() for graceful degradation</li>
+          <li><strong>Cleanup:</strong> Use finalize() for guaranteed cleanup</li>
+          <li><strong>Conditional Stop:</strong> Use takeWhile() for condition-based stopping</li>
+          <li><strong>Performance:</strong> Store subscriptions in arrays for bulk management</li>
+        </ul>
+      </div>
+
+      <div class="implementation-card">
+        <h4>📊 Performance Benefits</h4>
+        <ul>
+          <li><strong>Signals:</strong> Fine-grained reactivity, better performance</li>
+          <li><strong>Standalone:</strong> Smaller bundle size, faster loading</li>
+          <li><strong>Lazy Loading:</strong> Load components only when needed</li>
+          <li><strong>Modern RxJS:</strong> Better tree-shaking, smaller bundles</li>
+          <li><strong>Change Detection:</strong> Automatic with signals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-world Companies -->
+  <div class="companies-section">
+    <h3>🏆 Companies Using These Patterns</h3>
+    <div class="companies-grid">
+      <div class="company-card">
+        <h4>📊 Financial</h4>
+        <p>Bloomberg, E*TRADE, Robinhood use real-time data feeds</p>
+      </div>
+      <div class="company-card">
+        <h4>💬 Social Media</h4>
+        <p>Facebook, Twitter, Instagram use live notifications</p>
+      </div>
+      <div class="company-card">
+        <h4>📝 Productivity</h4>
+        <p>Google Docs, Microsoft 365, Notion use auto-save</p>
+      </div>
+      <div class="company-card">
+        <h4>🛒 E-commerce</h4>
+        <p>Amazon, eBay, Shopify use inventory updates</p>
+      </div>
+      <div class="company-card">
+        <h4>🎮 Gaming</h4>
+        <p>Twitch, Discord, Steam use real-time features</p>
+      </div>
+      <div class="company-card">
+        <h4>☁️ Cloud</h4>
+        <p>AWS, Google Cloud, Azure use monitoring dashboards</p>
+      </div>
+    </div>
+  </div>
+</div>

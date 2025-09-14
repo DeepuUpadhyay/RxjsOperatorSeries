@@ -1,0 +1,204 @@
+<div class="from-event-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <h2>🖱️ FromEvent Operator - Real-World Examples</h2>
+    <p class="subtitle">Converting DOM events into powerful Observable streams for modern web applications</p>
+  </div>
+
+  <!-- Real-world Examples Grid -->
+  <div class="examples-grid">
+    
+    <!-- Example 1: Advanced Click Analytics -->
+    <div class="example-card">
+      <div class="card-header">
+        <h3>📊 Click Analytics & Tracking</h3>
+        <span class="use-case">E-commerce • Digital Marketing • UX Analysis</span>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>Track user interactions with detailed analytics:</p>
+          <div class="button-group">
+            <button #uploadBtn class="action-btn upload-btn">
+              📤 Upload Content
+            </button>
+            <button #downloadBtn class="action-btn download-btn">
+              📥 Download File
+            </button>
+          </div>
+          <div class="stats-display">
+            <div class="stat-item">
+              <span class="stat-label">Total Clicks:</span>
+              <span class="stat-value">{{totalClicks()}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="output-section">
+          <h4>Click History:</h4>
+          <div class="click-history">
+            <div class="click-item" *ngFor="let click of clickHistory()">
+              <span class="element-name">{{click.element}}</span>
+              <span class="coordinates">({{click.x}}, {{click.y}})</span>
+              <span class="timestamp">{{formatTimestamp(click.timestamp)}}</span>
+              <span class="count-badge">{{click.count}}</span>
+            </div>
+          </div>
+          <div id="clickContainer" class="output-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 2: Real-time Search -->
+    <div class="example-card">
+      <div class="card-header">
+        <h3>🔍 Real-time Search with Debouncing</h3>
+        <span class="use-case">Search Engines • Auto-complete • Content Filtering</span>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>Intelligent search with performance optimization:</p>
+          <div class="search-container">
+            <input 
+              #searchInput 
+              type="text" 
+              placeholder="Search videos... (type at least 3 characters)"
+              class="search-input"
+            >
+            <div class="search-status" [class.searching]="isSearching()">
+              {{isSearching() ? 'Searching...' : 'Ready'}}
+            </div>
+          </div>
+        </div>
+        <div class="output-section">
+          <h4>Search Results:</h4>
+          <div class="search-results">
+            <div class="result-item" *ngFor="let result of searchResults()">
+              🎥 {{result}}
+            </div>
+            <div *ngIf="searchResults().length === 0 && !isSearching()" class="no-results">
+              No results found. Try searching for "Angular", "RxJS", or "TypeScript"
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 3: Form Validation -->
+    <div class="example-card">
+      <div class="card-header">
+        <h3>✅ Real-time Form Validation</h3>
+        <span class="use-case">Registration Forms • Contact Forms • Data Entry</span>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>Instant feedback for better user experience:</p>
+          <div class="form-container">
+            <label for="emailInput">Email Address:</label>
+            <input 
+              #emailInput 
+              type="email" 
+              placeholder="Enter your email address"
+              class="form-input"
+              [class.valid]="emailStatus().includes('✅')"
+              [class.invalid]="emailStatus().includes('❌')"
+            >
+            <div class="validation-status" [innerHTML]="emailStatus()"></div>
+          </div>
+        </div>
+        <div class="output-section">
+          <h4>Validation History:</h4>
+          <div class="validation-history">
+            <div class="validation-item" *ngFor="let validation of validationStatus()">
+              <span class="field-name">{{validation.field}}</span>
+              <span class="status-icon">{{validation.isValid ? '✅' : '❌'}}</span>
+              <span class="timestamp">{{formatTimestamp(validation.timestamp)}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 4: Mouse Tracking -->
+    <div class="example-card">
+      <div class="card-header">
+        <h3>🖱️ Mouse Movement Tracking</h3>
+        <span class="use-case">Heatmap Analytics • User Behavior • Interactive Demos</span>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>Track cursor movement for analytics:</p>
+          <div 
+            #mouseTracker 
+            class="mouse-tracker"
+            [style.background-position]="mousePosition().x + 'px ' + mousePosition().y + 'px'"
+          >
+            Move your mouse here to track coordinates
+            <div class="coordinates-display">
+              X: {{mousePosition().x}}, Y: {{mousePosition().y}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 5: User Activity Monitoring -->
+    <div class="example-card full-width">
+      <div class="card-header">
+        <h3>📈 Comprehensive User Activity Monitoring</h3>
+        <span class="use-case">Analytics Platforms • User Research • Performance Monitoring</span>
+      </div>
+      <div class="card-content">
+        <div class="demo-section">
+          <p>Real-time tracking of user interactions and engagement:</p>
+          <div class="activity-instructions">
+            Try: Clicking buttons, typing in inputs, switching browser tabs, pressing Enter/Tab/Escape keys
+          </div>
+        </div>
+        <div class="output-section">
+          <h4>Live Activity Feed:</h4>
+          <div class="activity-feed">
+            <div class="activity-item" *ngFor="let activity of userActivity()">
+              <span class="activity-icon">{{getActivityIcon(activity.type)}}</span>
+              <span class="activity-type">{{activity.type}}</span>
+              <span class="activity-target">{{activity.target}}</span>
+              <span class="activity-time">{{formatTimestamp(activity.timestamp)}}</span>
+              <span class="activity-data" *ngIf="activity.data">
+                {{activity.data | json}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical Implementation Info -->
+  <div class="implementation-info">
+    <h3>🔧 Technical Implementation</h3>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <h4>Event Handling</h4>
+        <ul>
+          <li>fromEvent() for DOM event conversion</li>
+          <li>merge() for combining multiple streams</li>
+          <li>throttleTime() for performance optimization</li>
+        </ul>
+      </div>
+      <div class="tech-item">
+        <h4>Data Processing</h4>
+        <ul>
+          <li>debounceTime() for search optimization</li>
+          <li>distinctUntilChanged() for duplicate filtering</li>
+          <li>scan() for accumulative operations</li>
+        </ul>
+      </div>
+      <div class="tech-item">
+        <h4>Modern Angular</h4>
+        <ul>
+          <li>Standalone components</li>
+          <li>Signal-based state management</li>
+          <li>Reactive programming patterns</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

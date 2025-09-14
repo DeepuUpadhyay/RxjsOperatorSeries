@@ -1,0 +1,8 @@
+.navbar{
+    background-color: #f8faf961;
+    border-bottom: 1px solid #e9ecef;
+}
+.nav{
+    display: flex !important;
+    justify-content: end;
+}

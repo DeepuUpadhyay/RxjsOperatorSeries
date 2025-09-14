@@ -1,0 +1,59 @@
+<div class="my-3">
+  <h2>ReplaySubject :<strong>{{replaySubject}}</strong></h2>
+
+  <hr />
+
+  <div class="row">
+    <div class="col">
+      <h3>Add Video</h3>
+    </div>
+  </div>
+  <hr />
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <input type="text" class="form-control" #userInput />
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-success" (click)="UserData(userInput.value)">
+        Add Video
+      </button>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-md-4">
+      <strong>User 1</strong>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let item of userList1">
+          <strong>Video</strong>: {{ item }}
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <strong>User 2</strong>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let item of userList2">
+          <strong>Video</strong>: {{ item }}
+        </li>
+      </ul>
+      <br />
+      <button (click)="subscribe2()" class="btn " [ngClass]="subscribeMod2?'btn-success':' btn-danger'">
+        {{subscribeMod2?'Subscribe':' UnSubscribe'}}
+        
+    </button>
+    </div>
+    <div class="col-md-4">
+      <strong>User 3</strong>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let item of userList3">
+          <strong>Video</strong>: {{ item }}
+        </li>
+      </ul>
+      <br />
+      <button (click)="subscribe3()" class="btn " [ngClass]="subscribeMod3?'btn-success':' btn-danger'">
+        {{subscribeMod3?'Subscribe':' UnSubscribe'}}
+        
+    </button>
+    </div>
+  </div>
+</div>

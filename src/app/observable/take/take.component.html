@@ -1,0 +1,158 @@
+<div class="container-fluid p-4">
+  <!-- Header with Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">
+      <i class="fas fa-cut me-2"></i>Take Operator
+    </h1>
+    <button class="btn btn-outline-primary" (click)="goBackToDashboard()">
+      <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Operator Definition Section -->
+  <div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0"><i class="fas fa-book me-2"></i>What is Take?</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <h5><strong>Definition:</strong></h5>
+        <p class="mb-2">{{operatorDefinition}}</p>
+        <div class="bg-light p-3 rounded mt-3">
+          <strong>Take Operator Family:</strong>
+          <ul class="mb-0 mt-2">
+            <li>🔢 <strong>take(n):</strong> Takes first n values then completes</li>
+            <li>🔚 <strong>takeLast(n):</strong> Takes last n values when source completes</li>
+            <li>⏹️ <strong>takeUntil(notifier):</strong> Takes values until notifier emits</li>
+            <li>✔️ <strong>takeWhile(predicate):</strong> Takes values while condition is true</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-Life Examples Section -->
+  <div class="card mb-4 border-success">
+    <div class="card-header bg-success text-white">
+      <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Real-Life Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4 mb-3" *ngFor="let example of realLifeExamples">
+          <div class="border rounded p-3 h-100">
+            <h5 class="text-success">{{example.title}}</h5>
+            <p class="text-muted">{{example.description}}</p>
+            <pre class="bg-dark text-light p-2 rounded"><code>{{example.code}}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Examples Section -->
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h3 class="mb-0"><i class="fas fa-code me-2"></i>Interactive Examples</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Basic Examples -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-primary">Basic Take Examples</h5>
+            <p class="small text-muted">take, takeLast, takeUntil demonstrations</p>
+            <div class="bg-light p-2 rounded mb-2">
+              <strong>Data:</strong> ['Mahesh', 'Rajesh', 'Abhishek', 'Ashwin', 'Rahne', 'Virat', 'Dhoni']
+            </div>
+            <div class="mb-2">
+              <strong class="text-info">Take(5):</strong>
+              <ul id="elContainer" class="list-unstyled small"></ul>
+            </div>
+            <div class="mb-2">
+              <strong class="text-info">TakeLast(3):</strong>
+              <ul id="elContainer2" class="list-unstyled small"></ul>
+            </div>
+            <div>
+              <strong class="text-info">TakeUntil(click):</strong>
+              <ul id="elContainer3" class="list-unstyled small"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Life Example 1 -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-success">🛍️ Product Pagination</h5>
+            <p class="small text-muted">Loading first 5 products for better performance</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Scenario:</strong> E-commerce product listing
+            </div>
+            <ul id="elContainer4" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+
+        <!-- Real-Life Example 2 -->
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-info">👋 Welcome Message</h5>
+            <p class="small text-muted">Show welcome message only once</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Scenario:</strong> User onboarding
+            </div>
+            <ul id="elContainer5" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Example Row -->
+      <div class="row">
+        <div class="col-lg-4 mb-3">
+          <div class="border rounded p-3">
+            <h5 class="text-warning">🔄 API Retry Limit</h5>
+            <p class="small text-muted">Limit retry attempts to prevent infinite loops</p>
+            <div class="bg-light p-2 rounded">
+              <strong>Scenario:</strong> Network error handling
+            </div>
+            <ul id="elContainer6" class="list-unstyled mt-2 small"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- When to Use Section -->
+  <div class="card border-info">
+    <div class="card-header bg-info text-white">
+      <h3 class="mb-0"><i class="fas fa-question-circle me-2"></i>When to Use Take?</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h5 class="text-success">✅ Use Take When:</h5>
+          <ul>
+            <li>Implementing pagination (first N items)</li>
+            <li>One-time operations (welcome messages)</li>
+            <li>Limiting retry attempts</li>
+            <li>Performance optimization</li>
+            <li>Preventing infinite streams</li>
+            <li>Getting sample data for testing</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h5 class="text-danger">❌ Avoid Take When:</h5>
+          <ul>
+            <li>You need all the data</li>
+            <li>Dynamic limiting is required</li>
+            <li>The count might change at runtime</li>
+            <li>Working with finite observables</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="alert alert-success mt-3">
+        <h6><strong>💡 Pro Tip:</strong></h6>
+        <p class="mb-0">Take operators are perfect for performance optimization. Use <code>take(1)</code> for one-time values, <code>takeUntil()</code> for cleanup, and <code>take(n)</code> for pagination!</p>
+      </div>
+    </div>
+  </div>
+</div>

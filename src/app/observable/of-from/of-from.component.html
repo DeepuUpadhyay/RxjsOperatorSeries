@@ -1,0 +1,56 @@
+<div class="my-3">
+  <h2>Of & From</h2>
+  <br />
+  <strong>Of (Ex-1)</strong>
+  <div class="row">
+    <div class="col md-6">
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data:</strong>OF ('shivam','Ram','Shyam','Rahul','Rajesh')
+      </p>
+      <hr />
+      <div *ngIf="isLoading; else notLoadingBlock">Loading...</div>
+      
+      <ng-template #notLoadingBlock>
+        <ul id="elContainer"></ul>
+      </ng-template>
+    </div>
+    <div class="col md-6">
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data2:</strong>OF
+        (&#123;'name':'shivam','age':25,'city':'Delhi'&#125;)
+      </p>
+      <hr />
+      <ul *ngIf="obsMsg && obsMsg.length > 0">
+        <li *ngFor="let item of obsMsg">{{ item.name }} -{{ item.age }}</li>
+      </ul>
+    </div>
+  </div>
+  <br />
+  <strong>From (Ex-2)</strong>
+  <div class="row">
+    <div class="col md-4">
+      <strong>Array:</strong>
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data:</strong>Form (['shivam','Ram','Shyam','Rahul','Rajesh'])
+      </p>
+      <hr />
+      <ul id="elContainer2"></ul>
+    </div>
+    <div class="col md-4">
+      <strong>Promise:</strong>
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data: </strong>Promise to Obserable
+      </p>
+      <hr />
+      <ul id="elContainer3"></ul>
+    </div>
+    <div class="col md-4">
+      <strong>String:</strong>
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data: </strong>String to Obserable
+      </p>
+      <hr />
+      <ul id="elContainer4"></ul>
+    </div>
+  </div>
+</div>

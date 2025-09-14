@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.green-box li {
+    background-color: rgba(0, 128, 0, 0.5); /* Green with 0.5 opacity */
+    padding: 10px;
+    margin: 5px 0;
+    list-style-type: none;
+  }
+  
+  .error-list {
+    padding-left: 0;
+  }
+  
+  .error-list li {
+    background-color: #f8d7da; /* Light red */
+    color: #721c24; /* Dark red */
+    border-color: #f5c6cb; /* Red */
+    padding: 10px;
+    margin: 5px 0;
+    list-style-type: none;
+  }

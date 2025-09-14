@@ -1,0 +1,56 @@
+<div class="my-3">
+  <h2>Filter Oprator</h2>
+  <br />
+  <div class="row">
+    <div class="col md-4">
+      <strong>Ex-1</strong>
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data:Filter </strong> by Length
+      </p>
+      <table class="table">
+        <tr>
+          <th class="me-3">Id</th>
+          <th>Name</th>
+        </tr>
+        <tr class="text-success" *ngFor="let user of allUsers()">
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+          </tr>
+      </table>
+    </div>
+    <div class="col md-4">
+      <strong>Ex-2</strong>
+      <p class="bg-light py-3 px-3 border rounded" >
+        <strong>Data:Filter </strong> by Gender
+      </p>
+      <table class="table">
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Gender</th>
+        </tr>
+        <tr class="text-success"  *ngFor="let user of filteredUsers()">
+          <td>{{user.id}}</td>
+          <td>{{user.name}}</td>   
+          <td>{{user.department}}</td>   
+        </tr>
+      </table>
+    </div>
+    <div class="col md-4">
+      <strong>Ex-3</strong>
+      <p class="bg-light py-3 px-3 border rounded">
+        <strong>Data:Filter </strong> by Length
+      </p>
+      <table class="table">
+        <tr>
+          <th class="me-4">Id</th>
+          <th>Name</th>
+        </tr>
+        <tr class="text-success" *ngFor="let user of sampleUsers">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

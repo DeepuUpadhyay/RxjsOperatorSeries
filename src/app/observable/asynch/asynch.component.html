@@ -1,0 +1,42 @@
+<div class="my-3">
+    <h2>AysncSubject :<strong>{{asyncSub}}</strong></h2>
+  
+    <hr />
+  
+    <div class="row">
+      <div class="col">
+        <h3>Add Video</h3>
+      </div>
+    </div>
+    <hr />
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <input type="text" class="form-control" #userInput />
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-success" (click)="UserData(userInput.value)">
+          Add Video
+        </button>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-4">
+        <strong>User 1</strong>
+        <ul class="list-group">
+          <li class="list-group-item" >
+            <strong>Video</strong>:{{asyncVideo}}
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <strong>Complete Subscription</strong>
+        <br />
+        <button (click)="OnComplete()" class="btn btn-success" >
+          Complete Subscription
+          
+      </button>
+      </div>
+    </div>
+  </div>
+  

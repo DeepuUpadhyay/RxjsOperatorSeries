@@ -1,0 +1,385 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-700 font-sans text-gray-800">
+  <!-- Header Section -->
+  <header class="bg-white/95 backdrop-blur-md p-8 mb-8 border-b border-white/20">
+    <div class="max-w-6xl mx-auto flex justify-between items-center flex-wrap gap-4">
+      <div class="title-section">
+        <h1 class="text-4xl font-bold text-gray-800 m-0 flex items-center gap-2">
+          <span class="text-3xl">📊</span>
+          Observable Dashboard
+        </h1>
+        <p class="text-lg text-gray-600 mt-2">
+          Real-time monitoring with RxJS reactive streams
+        </p>
+      </div>
+      
+      <div class="flex flex-wrap gap-4 items-center">
+        <div class="flex flex-col">
+          <label for="timeframe" class="text-sm font-medium text-gray-700 mb-1">Timeframe:</label>
+          <select 
+            id="timeframe"
+            class="px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            [value]="selectedTimeframe()"
+            (change)="onTimeframeChange($any($event.target).value)"
+          >
+            <option *ngFor="let option of timeframeOptions" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            <input 
+              type="checkbox" 
+              class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              [checked]="isLiveMode()"
+              (change)="toggleLiveMode()"
+            >
+            Live Mode
+          </label>
+        </div>
+
+        <button 
+          class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 hover:shadow-lg hover:-translate-y-0.5"
+          (click)="refreshDashboard()"
+          title="Refresh Dashboard"
+        >
+          <span class="text-lg">🔄</span>
+          Refresh
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search and Filter Section -->
+  <section class="max-w-6xl mx-auto mb-8 px-4">
+    <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/10">
+      <div class="flex flex-col md:flex-row gap-4 items-center">
+        <div class="relative flex-1 min-w-0">
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg">🔍</span>
+          <input 
+            type="text" 
+            class="w-full pl-10 pr-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50"
+            placeholder="Search metrics, logs, or operators..."
+            [value]="searchTerm()"
+            (input)="onSearchChange($any($event.target).value)"
+          >
+        </div>
+        
+        <div class="flex flex-col">
+          <label for="operator-filter" class="text-sm font-medium text-white/90 mb-1">Operator:</label>
+          <select 
+            id="operator-filter"
+            class="px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+            [value]="selectedOperator()"
+            (change)="onOperatorChange($any($event.target).value)"
+          >
+            <option *ngFor="let option of operatorOptions" [value]="option" class="text-gray-800">
+              {{ option | titlecase }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics Grid -->
+  <section class="max-w-6xl mx-auto mb-8 px-4">
+    <h2 class="text-2xl font-semibold text-white mb-6 flex items-center gap-2">
+      <span class="text-2xl">📈</span>
+      Real-time Metrics
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div 
+        *ngFor="let metric of filteredMetrics(); trackBy: trackByMetric"
+        class="bg-white/95 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-2xl">{{ metric.icon }}</span>
+          <h3 class="text-lg font-semibold text-gray-800">{{ metric.title }}</h3>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="text-3xl font-bold text-gray-900">
+            {{ metric.value | number }}
+            <span *ngIf="metric.id === 'response-time'" class="text-lg font-normal text-gray-600">ms</span>
+            <span *ngIf="metric.id === 'errors'" class="text-lg font-normal text-gray-600">%</span>
+          </div>
+          
+          <div class="flex items-center gap-2" [class]="getMetricChangeClass(metric.change)">
+            <span class="text-lg">
+              {{ metric.change >= 0 ? '↗️' : '↘️' }}
+            </span>
+            <span class="font-medium">{{ metric.change | number:'1.1-1' }}%</span>
+          </div>
+        </div>
+        
+        <div class="mt-4 pt-4 border-t border-gray-200">
+          <span class="text-sm text-gray-500">Last {{ selectedTimeframe() }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RxJS Operators Showcase -->
+  <section class="max-w-6xl mx-auto mb-8 px-4">
+    <div class="bg-white/5 backdrop-blur-md rounded-xl p-8 border border-white/10">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-semibold text-white mb-4 flex items-center justify-center gap-3">
+          <span class="text-3xl">🧰</span>
+          RxJS Operators Library
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div class="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20">
+            <div class="text-2xl font-bold text-white">{{ allOperators().length }}</div>
+            <div class="text-sm text-white/80 uppercase tracking-wide">Total Operators</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20">
+            <div class="text-2xl font-bold text-white">{{ filteredOperators().length }}</div>
+            <div class="text-sm text-white/80 uppercase tracking-wide">Filtered Results</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20">
+            <div class="text-2xl font-bold text-white">6</div>
+            <div class="text-sm text-white/80 uppercase tracking-wide">Categories</div>
+          </div>
+        </div>
+        
+        <p class="text-lg text-white/90 max-w-2xl mx-auto leading-relaxed">
+          Explore our comprehensive collection of RxJS operators with live examples, 
+          real-world use cases, and interview preparation tips. Click any operator to dive deep into its implementation.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div 
+          *ngFor="let operator of filteredOperators(); trackBy: trackByOperator"
+          class="bg-white/95 backdrop-blur-md rounded-xl p-6 border border-white/20 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-indigo-400 relative overflow-hidden group"
+          (click)="navigateToOperator(operator)"
+        >
+          <!-- Gradient accent bar -->
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-xl font-semibold">
+              {{ operator.icon }}
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium border border-indigo-300">
+                {{ getCategoryIcon(operator.category) }} {{ operator.category }}
+              </span>
+              <div class="flex" [ngClass]="{
+                'text-green-500': getDifficultyColor(operator.difficulty) === 'Beginner',
+                'text-yellow-500': getDifficultyColor(operator.difficulty) === 'Intermediate', 
+                'text-red-500': getDifficultyColor(operator.difficulty) === 'Advanced'
+              }">
+                <span *ngFor="let star of getDifficultyStars(operator.difficulty)" class="text-sm">⭐</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ operator.name }}</h3>
+              <p class="text-gray-600 text-sm leading-relaxed">{{ operator.description }}</p>
+            </div>
+            
+            <div class="bg-blue-50 rounded-lg p-4">
+              <h4 class="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-1">
+                💡 Common Use Cases:
+              </h4>
+              <ul class="space-y-1">
+                <li 
+                  *ngFor="let useCase of operator.useCases.slice(0, 3)" 
+                  class="text-xs text-gray-700 flex items-start gap-2"
+                >
+                  <span class="text-indigo-500 mt-0.5">•</span>
+                  {{ useCase }}
+                </li>
+                <li *ngIf="operator.useCases.length > 3" class="text-xs text-indigo-600 font-medium">
+                  +{{ operator.useCases.length - 3 }} more examples...
+                </li>
+              </ul>
+            </div>
+            
+            <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-400">
+              <h4 class="text-sm font-semibold text-green-800 mb-1 flex items-center gap-1">
+                🎯 Interview Tip:
+              </h4>
+              <p class="text-xs text-green-700 leading-relaxed">{{ operator.interviewTip }}</p>
+            </div>
+          </div>
+          
+          <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+            <div class="text-xs">
+              <span class="text-gray-500">Difficulty: </span>
+              <span class="font-medium" [ngClass]="{
+                'text-green-600': getDifficultyColor(operator.difficulty) === 'Beginner',
+                'text-yellow-600': getDifficultyColor(operator.difficulty) === 'Intermediate',
+                'text-red-600': getDifficultyColor(operator.difficulty) === 'Advanced'
+              }">{{ getDifficultyColor(operator.difficulty) }}</span>
+            </div>
+            <div class="text-xs text-indigo-600 font-medium group-hover:text-indigo-800 transition-colors">
+              Click to explore →
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Categories Filter -->
+      <div class="text-center">
+        <h3 class="text-lg font-semibold text-white mb-4">Quick Category Filters:</h3>
+        <div class="flex flex-wrap justify-center gap-3">
+          <button 
+            *ngFor="let category of ['all', 'creation', 'transformation', 'filtering', 'combination', 'utility']"
+            class="px-4 py-2 rounded-full border transition-all duration-300 text-sm font-medium"
+            [ngClass]="{
+              'bg-white text-indigo-600 border-white': selectedOperator() === category,
+              'bg-white/10 text-white border-white/30 hover:bg-white/20': selectedOperator() !== category
+            }"
+            (click)="onOperatorChange(category)"
+          >
+            {{ getCategoryIcon(category) }} {{ category | titlecase }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activity Logs Section -->
+  <section class="max-w-6xl mx-auto mb-8 px-4">
+    <h2 class="text-2xl font-semibold text-white mb-6 flex items-center gap-2">
+      <span class="text-2xl">📋</span>
+      Activity Stream
+    </h2>
+    
+    <div class="bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10">
+      <div class="flex justify-between items-center mb-6">
+        <p class="text-white/90">
+          Real-time system events and user activities
+        </p>
+        <span class="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium">
+          {{ filteredLogs().length }} events
+        </span>
+      </div>
+      
+      <div class="space-y-3">
+        <div 
+          *ngFor="let log of filteredLogs(); trackBy: trackByLog"
+          class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 flex items-center justify-between hover:bg-white/15 transition-all duration-200"
+        >
+          <div class="text-white/70 text-sm font-mono">
+            {{ formatTimestamp(log.timestamp) }}
+          </div>
+          
+          <div class="flex-1 mx-4">
+            <div class="text-white font-medium">{{ log.action }}</div>
+            <div class="text-white/60 text-sm">{{ log.user }}</div>
+          </div>
+          
+          <div>
+            <span 
+              class="px-3 py-1 rounded-full text-xs font-medium"
+              [ngClass]="{
+                'bg-green-100 text-green-800': log.status === 'success',
+                'bg-yellow-100 text-yellow-800': log.status === 'warning',
+                'bg-red-100 text-red-800': log.status === 'error'
+              }"
+            >
+              {{ log.status }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RxJS Concepts Section -->
+  <section class="max-w-6xl mx-auto mb-8 px-4">
+    <h2 class="text-2xl font-semibold text-white mb-6 flex items-center gap-2">
+      <span class="text-2xl">🎓</span>
+      RxJS Concepts in Action
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+        <h3 class="text-lg font-semibold text-white mb-3">Reactive Streams</h3>
+        <p class="text-white/80 text-sm mb-4">
+          This dashboard demonstrates how multiple data streams combine using operators like 
+          <code class="bg-white/20 px-1 rounded text-indigo-200">combineLatest</code>, <code class="bg-white/20 px-1 rounded text-indigo-200">merge</code>, and <code class="bg-white/20 px-1 rounded text-indigo-200">switchMap</code>.
+        </p>
+        <ul class="space-y-2 text-sm text-white/70">
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-0.5">•</span>
+            Real-time metric updates with <code class="bg-white/20 px-1 rounded text-green-200">interval</code>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-0.5">•</span>
+            Search debouncing with <code class="bg-white/20 px-1 rounded text-green-200">debounceTime</code>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-0.5">•</span>
+            Stream cleanup with <code class="bg-white/20 px-1 rounded text-green-200">takeUntil</code>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+        <h3 class="text-lg font-semibold text-white mb-3">Memory Management</h3>
+        <p class="text-white/80 text-sm mb-4">
+          Proper subscription management prevents memory leaks using the destroy pattern.
+        </p>
+        <ul class="space-y-2 text-sm text-white/70">
+          <li class="flex items-start gap-2">
+            <span class="text-blue-400 mt-0.5">•</span>
+            Unsubscribe on component destroy
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-blue-400 mt-0.5">•</span>
+            Use <code class="bg-white/20 px-1 rounded text-blue-200">takeUntil</code> for automatic cleanup
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-blue-400 mt-0.5">•</span>
+            Subject-based communication
+          </li>
+        </ul>
+      </div>
+      
+      <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+        <h3 class="text-lg font-semibold text-white mb-3">Error Handling</h3>
+        <p class="text-white/80 text-sm mb-4">
+          Robust error handling ensures the application remains stable.
+        </p>
+        <ul class="space-y-2 text-sm text-white/70">
+          <li class="flex items-start gap-2">
+            <span class="text-red-400 mt-0.5">•</span>
+            Graceful error recovery
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-red-400 mt-0.5">•</span>
+            User-friendly error messages
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-red-400 mt-0.5">•</span>
+            Retry mechanisms for failed operations
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white/5 backdrop-blur-md border-t border-white/10 py-8">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <p class="text-white/80 mb-4">
+        Built with Angular {{ 16 }} and RxJS - Demonstrating reactive programming patterns
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 text-sm">
+        <a href="/observable" class="text-white/60 hover:text-white transition-colors underline">Back to Operators</a>
+        <a href="/observable/filter-operator" class="text-white/60 hover:text-white transition-colors underline">Filter Examples</a>
+        <a href="/observable/debounce" class="text-white/60 hover:text-white transition-colors underline">Debounce Examples</a>
+      </div>
+    </div>
+  </footer>
+</div>
